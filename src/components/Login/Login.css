@@ -1,0 +1,239 @@
+/* Main container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Login box */
+.login-box {
+    width: 380px;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Title */
+.login-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Demo credentials box */
+.demo-credentials {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 26px;
+}
+
+.demo-credentials p {
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #495057;
+}
+
+.demo-credentials span {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Form container */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form labels */
+.login-label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* Input fields */
+.login-input {
+    font-size: 14px;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+.login-input:focus {
+    border-color: #007bff;
+}
+
+/* Password input wrapper */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    width: 94%;
+    padding-right: 10px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+
+/* Extra options */
+.extra-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.extra-options label {
+    display: flex;
+    align-items: center;
+}
+
+.extra-options input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.extra-options a {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.extra-options a:hover {
+    text-decoration: underline;
+}
+
+/* Social buttons container */
+.signup-options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    position: relative;
+}
+
+.signup-options p {
+    font-size: 14px;
+    margin: 0;
+    padding: 0 10px;
+    background-color: #fff;
+    color: #6c757d;
+}
+
+.signup-options::before,
+.signup-options::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ddd;
+    margin: 0 10px;
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.social-button svg {
+    margin-right: 8px;
+}
+
+.facebook {
+    color: #3b5998;
+    border-color: #3b5998;
+}
+
+.facebook:hover {
+    background-color: #3b5998;
+    color: #fff;
+}
+
+.google {
+    color: #db4437;
+    border-color: #db4437;
+}
+
+.google:hover {
+    background-color: #db4437;
+    color: #fff;
+}
+
+.twitter {
+    color: #1da1f2;
+    border-color: #1da1f2;
+}
+
+.twitter:hover {
+    background-color: #1da1f2;
+    color: #fff;
+}
+
+/* Login button */
+.login-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 20px;
+    /* Positioning after social buttons */
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer (Sign Up section) */
+.sign-up {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .sign-up a {
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .sign-up a:hover {
+    text-decoration: underline;
+  }

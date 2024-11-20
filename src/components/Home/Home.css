@@ -1,0 +1,123 @@
+.container {
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    /* border: 1px solid red; */
+    
+}
+
+.title {
+    color: #f18c00;
+}
+
+.subtitle {
+    position: relative;
+    display: inline-block;
+    color: black;
+}
+.subtitle::after{
+    position: absolute;
+    content: "";
+    width: 45px;
+    height: 2px;
+    top: 50%;
+    right: -55px;
+    margin-top: -1px;
+    background-color: #ffaa00;
+}
+.section h2{
+    color: black; 
+}
+.section p{
+    color: black; 
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.mission-values {
+    margin-left: 1rem;
+}
+.services {
+    text-align: center;
+    padding: 20px;
+    margin-top: 80px;
+}
+.section-title{
+    color: #FFA500;
+    position: relative;
+    display: inline-block;
+}
+.section-title::before{
+    position: absolute;
+    content: "";
+    width: 45px;
+    height: 2px;
+    top: 50%;
+    left: -55px;
+    margin-top: -1px;
+    background-color: #ffaa00;
+}
+.section-title::after{
+    position: absolute;
+    content: "";
+    width: 45px;
+    height: 2px;
+    top: 50%;
+    right: -55px;
+    margin-top: -1px;
+    background-color: #ffaa00;
+}
+
+.services h2 {
+    font-size: 2em;
+    margin: 5px;
+    color: black;
+}
+
+
+
+.services h2 span {
+    color: #FFA500; /* Or your desired color */
+}
+
+.parent-card {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.service-card {
+    width: 500px;
+    height: 500px; /* Fixed height to allow scrolling */
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 20px;
+}
+
+.service-card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.service-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+
+.service-card p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+
+

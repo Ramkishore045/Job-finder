@@ -1,0 +1,103 @@
+.contact-container {
+    /* border: 1px solid red; */
+    color: #ffffff; /* White text */
+    padding: 20px; /* 180px top, 50px bottom, 30px left and right */
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  .contact-title::after{
+    position: absolute;
+    content: "";
+    width: 45px;
+    height: 2px;
+    top: 50%;
+    right: -55px;
+    margin-top: -1px;
+    background-color: #ffaa00;
+  }
+  
+  .contact-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items at the top */
+    flex-wrap: nowrap;
+    gap: 50px; /* Add space between items */
+    padding: 0 20px; /* Add left and right padding */
+  }
+  
+  .contact-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* Align content inside each item */
+    margin: 20px;
+    max-width: 600px; /* Prevent items from becoming too wide */
+  }
+  
+  .contact-details {
+    margin-left: 20px;
+    text-align: left;
+  }
+  
+  .contact-title {
+    position: relative;
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffaa00; /* Yellow color */
+  }
+  
+  .contact-subtitle {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #023c9d;
+  }
+  
+  .contact-details p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #023c9d;
+  }
+  .phone-row {
+    display: flex;
+    align-items: flex-start;
+  }
+  .phone-row span {
+    margin-left: 10px; /* Adjust spacing as needed */
+  }
+  .address-text {
+    display: flex;
+    flex-direction: column; /* Stack the text vertically */
+    margin-left: 10px; /* Adds space between the icon and text */
+  }
+  
+  .address-text span {
+    display: block; /* Ensure each span takes a full line */
+  }
+  .contact-icons{
+    display: flex;
+  }
+  
+  .contact-icons a{
+    gap: 10px;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #023c9d;
+    border: 1px solid #023c9d;;
+    border-radius: 30px;
+    padding: 10px;
+  }
+  
+  .contact-icons a:hover {
+    color: #ffaa00; /* Yellow color */
+  }
+  
+  .footer {
+    text-align: left;
+    padding: 10px;
+    font-size: 14px;
+    color: #023c9d;
+    border-top: 2px solid black;
+  }
+  
