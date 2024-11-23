@@ -1,9 +1,10 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
-import Candidate from "./components/Candidate/Candidate";
+import JobProfiles from "./components/JobProfiles/JobProfiles";
 import Contact from "./components/Contact/ContactUs";
 import Login from "./components/Login/login";
+// import CandidateTable from "./components/Candidates/Candidates";
 
 const Layout = () => {
   return (
@@ -21,9 +22,11 @@ function App() {
     element: <Layout />, 
     children: [
     { path:'/',element:<Home />},
-    { path: "/candidate-finder", element: <Candidate /> },
+    { path: "/job-profiles", element: <JobProfiles /> },
     {path: "/contact-us", element: <Contact />},
     {path: "/login", element: <Login />},
+    {path: "/about-us", element: <Home />},
+    // {path: "/candidates", element: <CandidateTable />}
 
   ]
   }

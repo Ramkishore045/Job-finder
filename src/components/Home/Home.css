@@ -1,123 +1,127 @@
+
+/* Container */
 .container {
-    color: #ffffff;
-    font-family: Arial, sans-serif;
-    padding: 2rem;
-    /* border: 1px solid red; */
-    
+    width: 100%;
+    /* max-width: 1350px; */
+    margin: 0 auto;
+    padding: 0 auto;
+}
+.about-container{
+    padding: 0px 70px;
 }
 
-.title {
-    color: #f18c00;
+/* Section: About Us */
+.container-fluid {
+    padding: 2rem 0;
+    background-color: #343a40;
 }
 
-.subtitle {
-    position: relative;
-    display: inline-block;
-    color: black;
-}
-.subtitle::after{
-    position: absolute;
-    content: "";
-    width: 45px;
-    height: 2px;
-    top: 50%;
-    right: -55px;
-    margin-top: -1px;
-    background-color: #ffaa00;
-}
-.section h2{
-    color: black; 
-}
-.section p{
-    color: black; 
+.section-title {
+    font-size: 1.25rem;
+    color: #FEA116;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-align: left;
 }
 
-.section {
-    margin-bottom: 2rem;
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
 }
 
-.mission-values {
-    margin-left: 1rem;
+h1 span.text-primary {
+    color: #FEA116;
+    text-transform: uppercase;
 }
+
+p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+h3 {
+    font-size: 1.75rem;
+    margin-top: 2rem;
+    color: #fff;
+}
+
+/* List Styling */
+ul {
+    padding-left: 1.5rem;
+    list-style: disc;
+}
+
+ul li {
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+ul li p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+span{
+    color: #fff;
+}
+/* Services Section */
 .services {
+    padding: 3rem 0;
     text-align: center;
-    padding: 20px;
-    margin-top: 80px;
-}
-.section-title{
-    color: #FFA500;
-    position: relative;
-    display: inline-block;
-}
-.section-title::before{
-    position: absolute;
-    content: "";
-    width: 45px;
-    height: 2px;
-    top: 50%;
-    left: -55px;
-    margin-top: -1px;
-    background-color: #ffaa00;
-}
-.section-title::after{
-    position: absolute;
-    content: "";
-    width: 45px;
-    height: 2px;
-    top: 50%;
-    right: -55px;
-    margin-top: -1px;
-    background-color: #ffaa00;
 }
 
 .services h2 {
-    font-size: 2em;
-    margin: 5px;
-    color: black;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-transform: capitalize;
 }
 
-
-
 .services h2 span {
-    color: #FFA500; /* Or your desired color */
+    color: #007bff;
+    font-weight: bold;
 }
 
 .parent-card {
     display: flex;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 .service-card {
-    width: 500px;
-    height: 500px; /* Fixed height to allow scrolling */
-    margin: 10px;
+    background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto; /* Enable vertical scrolling */
-    padding: 20px;
+    width: 300px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .service-card img {
     width: 100%;
     height: auto;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
+    border-radius: 8px;
 }
 
 .service-card h3 {
-    margin-bottom: 10px;
-    font-size: 1.5em;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #007bff;
 }
 
 .service-card p {
-    color: #666;
-    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
 }
-
-
-
