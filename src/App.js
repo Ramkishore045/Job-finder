@@ -4,7 +4,7 @@ import Home from "./components/Home/Home";
 import JobProfiles from "./components/JobProfiles/JobProfiles";
 import Contact from "./components/Contact/ContactUs";
 import Login from "./components/Login/login";
-// import CandidateTable from "./components/Candidates/Candidates";
+import Candidates from "./components/Candidates/Candidates";
 
 const Layout = () => {
   return (
@@ -26,7 +26,7 @@ function App() {
     {path: "/contact-us", element: <Contact />},
     {path: "/login", element: <Login />},
     {path: "/about-us", element: <Home />},
-    // {path: "/candidates", element: <CandidateTable />}
+    {path: "/candidates", element: <Candidates />}
 
   ]
   }

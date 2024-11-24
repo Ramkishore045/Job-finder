@@ -1,0 +1,219 @@
+/* General styling for the app */
+.app-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f8f9fa;
+  }
+  
+  .app-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Add Candidate Form */
+  .add-candidate-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .form-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .input-field,
+  .input-file,
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .input-field:focus,
+  .input-file:focus,
+  select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .add-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .add-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Candidate Table */
+  .table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  .candidate-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .candidate-table th,
+  .candidate-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .candidate-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+  }
+  
+  .candidate-table td {
+    color: #333;
+  }
+  
+  .candidate-table td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  
+  /* Stage Indicator */
+  .stage-name {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .stage-name.technical {
+    background-color: #007bff;
+  }
+  
+  .stage-name.screening {
+    background-color: #ffc107;
+  }
+  
+  .stage-name.hr {
+    background-color: #28a745;
+  }
+  
+  .stage-name.pending {
+    background-color: #6c757d;
+  }
+  
+  .stage-name.rejected {
+    background-color: #dc3545;
+  }
+  
+  .stage-name.hired {
+    background-color: #007bff;
+  }
+  
+  /* Applied For */
+  .applied-for {
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color:#6c757d;
+    text-align: center;
+    text-size-adjust: auto;
+    font-size: 1em;
+  }
+  
+  /* Rating Icons */
+  .icon {
+    font-size: 18px;
+    margin: 0 2px;
+  }
+  
+  .thumbs-up {
+    color: #28a745;
+  }
+  
+  .thumbs-down {
+    color: #dc3545;
+  }
+  
+  /* Delete Button */
+  .delete-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+  }
+  
+  .delete-btn:hover {
+    color: #c82333;
+  }
+  
+  /* Responsive Design for Smaller Screens */
+  @media (max-width: 768px) {
+    .candidate-table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+  
+    .candidate-table th,
+    .candidate-table td {
+      display: block;
+      text-align: right;
+    }
+  
+    .candidate-table th {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+  
+    .candidate-table td {
+      position: relative;
+      padding-left: 50%;
+    }
+  
+    .candidate-table td:before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #007bff;
+    }
+  }
+  
+  /* Input Validation styles
+  .input-field:invalid {
+    border-color: #dc3545;
+  }
+  
+  .input-field:valid {
+    border-color: #0c0c0c;
+  } */
+  
