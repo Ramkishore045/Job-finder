@@ -106,7 +106,7 @@ function Login() {
         </button>
 
         <div className="sign-up">
-          Not registered yet? <a href="#">Sign Up</a>
+          Not registered yet? <a href="/create-account">Sign Up</a>
         </div>
       </div>
     </div>

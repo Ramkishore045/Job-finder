@@ -1,12 +1,11 @@
-
 /* Container */
 .container {
     width: 100%;
-    /* max-width: 1350px; */
     margin: 0 auto;
     padding: 0 auto;
 }
-.about-container{
+
+.about-container {
     padding: 0px 70px;
 }
 
@@ -16,7 +15,7 @@
     background-color: #343a40;
 }
 
-.section-title {
+.home-section-title {
     font-size: 1.25rem;
     color: #FEA116;
     text-transform: uppercase;
@@ -24,49 +23,51 @@
     text-align: left;
 }
 
-h1 {
+.home-main-heading {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     color: #fff;
 }
 
-h1 span.text-primary {
+.home-main-heading span.text-primary {
     color: #FEA116;
     text-transform: uppercase;
 }
 
-p {
+.home-container p {
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 1rem;
     color: #fff;
 }
 
-h3 {
+.home-sub-heading {
     font-size: 1.75rem;
     margin-top: 2rem;
     color: #fff;
 }
 
 /* List Styling */
-ul {
+.home-container ul {
     padding-left: 1.5rem;
     list-style: disc;
 }
 
-ul li {
+.home-container ul li {
     margin-bottom: 1rem;
     color: #fff;
 }
 
-ul li p {
+.home-container ul li p {
     margin: 0;
     font-size: 1rem;
     line-height: 1.5;
 }
-span{
+
+.home-container span {
     color: #fff;
 }
+
 /* Services Section */
 .services {
     padding: 3rem 0;

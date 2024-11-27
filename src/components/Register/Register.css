@@ -1,0 +1,202 @@
+.register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.register-box {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+
+.register-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+
+.toggle-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-left: -20px;
+    margin-bottom: 32px;
+    width: 28rem;
+}
+
+.toggle-button {
+    width: calc(50% - 20px);
+    margin-left: 20px;
+    padding: 12px 32px;
+    background: #f5f5f2;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 26px;
+    text-transform: capitalize;
+    color: #121212;
+    cursor: pointer;
+    border: none;
+}
+
+.toggle-button.active {
+    
+    color: #14a077;
+}
+
+.toggle-button:hover {
+    
+    color: #14a077;
+}
+
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.form-group {
+    width: 100%;
+}
+
+.form-label {
+    font-size: 1rem;
+    color: #121212;
+    margin-bottom: 0.5rem;
+    display: block;
+    text-align: left;
+}
+
+.required {
+    color: red;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: #14a077;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64666c;
+    font-size: 1.25rem;
+    left: 24rem;
+}
+
+
+.form-checkbox {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #555;
+    margin-top: 1rem;
+    margin-right: 25vh;
+}
+
+.checkbox-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    accent-color: #007aff;
+    transition: all 0.2s ease-in-out;
+}
+
+.checkbox-label {
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+}
+
+.terms-link {
+    color: #14a077;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.terms-link:hover {
+    text-decoration: underline;
+}
+.error-text {
+    font-size: 0.875rem;
+    color: red;
+    margin-top: 0.5rem;
+  }
+
+.form-button {
+    padding: 11px 32px;
+    border: none;
+    background: #14a077;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    border-color: #14a077;
+    text-transform: capitalize;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 26px;
+    margin-top: 13px;
+}
+
+.form-button:hover {
+    background-color: #14a077;
+}
+
+.login-link {
+    font-size: 0.875rem;
+    color: #555;
+    margin-top: 1rem;
+}
+
+.login-link-highlight {
+    color: black
+    ;
+    text-decoration: none;
+}
+
+.login-link-highlight:hover {
+    text-decoration: underline;
+}
+
+
+@media (max-width: 480px) {
+    .register-box {
+        width: 90%;
+        padding: 2rem;
+    }
+}

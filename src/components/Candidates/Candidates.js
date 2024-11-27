@@ -8,7 +8,7 @@ const Candidates = () => {
             id: 1,
             name: "John Doe",
             picture: "https://via.placeholder.com/50",
-            resume: "https://example.com/resume.pdf", // Example resume URL
+            resume: "https://example.com/resume.pdf",
             phone: "+1 465 456 4656",
             notes: "Need to do document verification.",
             stage: "Technical",
@@ -38,17 +38,17 @@ const Candidates = () => {
         const { name, value, files } = e.target;
 
         if (name === "picture" || name === "resume") {
-            // Handle file uploads
+
             setNewCandidate({ ...newCandidate, [name]: files[0] });
         } else if (name.startsWith("rating_")) {
-            // Handle ratings
+
             const ratingKey = name.split("_")[1];
             setNewCandidate({
                 ...newCandidate,
                 ratings: { ...newCandidate.ratings, [ratingKey]: Number(value) },
             });
         } else {
-            // Handle other inputs
+
             setNewCandidate({ ...newCandidate, [name]: value });
         }
     };
@@ -71,7 +71,7 @@ const Candidates = () => {
 
         setCandidates([...candidates, newCandidateEntry]);
 
-        // Reset the form
+
         setNewCandidate({
             name: "",
             picture: null,
@@ -103,13 +103,13 @@ const Candidates = () => {
 
     return (
         <div className="app-container">
-            {/* Add Candidate Form */}
+
             <div className="add-candidate-form">
                 <h3 className="form-title">Add New Candidate</h3>
 
                 <form
                     onSubmit={(e) => {
-                        e.preventDefault(); // Prevent default submission
+                        e.preventDefault();
                         addCandidate();
                     }}
                 >
@@ -262,7 +262,7 @@ const Candidates = () => {
                 </form>
             </div>
 
-            {/* Candidate Table */}
+
             <div className="table-container">
                 <table className="candidate-table">
                     <thead>

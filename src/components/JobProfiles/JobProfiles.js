@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebase"; // Import Firestore instance
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { db } from "../../firebase/firebase";
+import Pagination from "../Pagination/Pagination";
 import "./JobProfiles.css";
 
 function JobProfiles() {
@@ -35,7 +35,6 @@ function JobProfiles() {
     fetchJobs();
   }, []);
 
-  // Search Filtering
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) =>
       Object.values(job).some(
@@ -46,7 +45,6 @@ function JobProfiles() {
     );
   }, [jobs, searchTerm]);
 
-  // Sorting
   const sortedJobs = useMemo(() => {
     if (!sortField) return filteredJobs;
     return [...filteredJobs].sort((a, b) => {
@@ -58,7 +56,6 @@ function JobProfiles() {
     });
   }, [filteredJobs, sortField, sortOrder]);
 
-  // Pagination
   const totalPages = Math.ceil(sortedJobs.length / itemsPerPage);
   const paginatedJobs = useMemo(() => {
     const indexOfLastJob = currentPage * itemsPerPage;
@@ -66,10 +63,9 @@ function JobProfiles() {
     return sortedJobs.slice(indexOfFirstJob, indexOfLastJob);
   }, [sortedJobs, currentPage, itemsPerPage]);
 
-  // Event Handlers
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to page 1 when search term changes
+    setCurrentPage(1);
   };
 
   const handleSort = (field) => {
@@ -77,20 +73,20 @@ function JobProfiles() {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(parseInt(e.target.value));
-    setCurrentPage(1); // Reset to page 1 when items per page changes
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1);
   };
 
-  const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
     <div className="candidate-container">
       <h1 className="title">Candidate Search</h1>
 
-      {/* Search Input */}
+     
       <div className="top-bar">
         <input
           type="text"
@@ -101,10 +97,10 @@ function JobProfiles() {
         />
       </div>
 
-      {/* Error Handling */}
+   
       {error && <p className="error-message">{error}</p>}
 
-      {/* Table */}
+     
       {loading ? (
         <p>Loading jobs...</p>
       ) : (
@@ -128,7 +124,7 @@ function JobProfiles() {
                   <th
                     key={index}
                     className="table-header-cell"
-                    onClick={() => handleSort(header.split(" ").join(""))} // Sort by field
+                    onClick={() => handleSort(header.split(" ").join(""))} 
                   >
                     {header} {sortField === header.split(" ").join("") ? (sortOrder === "asc" ? "↑" : "↓") : ""}
                   </th>
@@ -164,43 +160,14 @@ function JobProfiles() {
         </div>
       )}
 
-      {/* Pagination Controls */}
-      <div className="pagination-bar">
-        <div className="items-per-page">
-          <label htmlFor="items-per-page">Items per page:</label>
-          <select
-            id="items-per-page"
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-          >
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-        </div>
-        <div className="pagination-buttons">
-          <button
-            onClick={() => goToPage(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="pagination-button"
-            aria-label="Previous page"
-          >
-            <FaArrowLeft />
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => goToPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="pagination-button"
-            aria-label="Next page"
-          >
-            <FaArrowRight />
-          </button>
-        </div>
-      </div>
+      
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        itemsPerPage={itemsPerPage}
+        onItemsPerPageChange={handleItemsPerPageChange}
+      />
     </div>
   );
 }

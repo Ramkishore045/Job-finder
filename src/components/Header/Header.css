@@ -72,7 +72,7 @@
     background: #1cb086;
     color: #ffffff;
   }
-  /* Dropdown Styles */
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -89,12 +89,12 @@
   
   .dropdown-menu {
     position: absolute;
-    top: 110%; /* Slightly below the parent element */
+    top: 110%; 
     left: 0;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    padding: 10px 0; /* Add space around the menu items */
+    padding: 10px 0; 
     z-index: 10;
     width: 200px;
   }
@@ -147,7 +147,7 @@
     color: #1cb086;
   }
   
-  /* Aligns nested menus to the right and ensures spacing */
+  
   .dropdown-item:hover .dropdown-submenu {
     display: block;
   }
@@ -155,4 +155,7 @@
   .dropdown-submenu {
     display: none;
   }
+  
+
+  
   

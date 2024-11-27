@@ -1,16 +1,16 @@
 import React from 'react';
 import './Home.css';
-import ServiceCard from './ServiceCard';
 
 function Home() {
     return (
-        <div className="container">
+        <div className="container home-container">
             <div className="container-fluid">
+                {/* About Section */}
                 <div className="about-container">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h6 className="section-title">About Us</h6>
-                            <h1>
+                            <h6 className="home-section-title">About Us</h6>
+                            <h1 className="home-main-heading">
                                 <span>Welcome to </span>
                                 <span className="text-primary">Ahimay Technology Solutions</span>
                             </h1>
@@ -19,7 +19,7 @@ function Home() {
                                 professionals with the mission of providing value-based solutions to its clients
                                 in the areas of Application Development, Quality Engineering, and Professional Services.
                             </p>
-                            <h3>Our Vision:</h3>
+                            <h3 className="home-sub-heading">Our Vision:</h3>
                             <span>
                                 Vision is to build a strong team that delivers projects with quality and dedication.
                             </span>
@@ -51,31 +51,41 @@ function Home() {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="services">
-                <h2>
-                    Explore Our <span>SERVICES</span>
-                </h2>
-                <div className="parent-card">
-                    <div className="service-card">
-                        <img src="https://ahimay.com/images/software-services-img1.png" alt="Software Services" />
-                        <h3>Software Services</h3>
-                        <p>Ahimay Technology Solutions can be...</p>
-                    </div>
-                    <div className="service-card">
-                        <img src="https://ahimay.com/images/busenss-consult-img2.png" alt="Business & Technology Consulting" />
-                        <h3>Business & Technology Consulting</h3>
-                        <p>Ahnay Technology Solutions offers...</p>
-                    </div>
-                    <div className="service-card">
-                        <img src="https://ahimay.com/images/professionalserv-img6.png" alt="Professional Services" />
-                        <h3>Professional Services</h3>
-                        <p>Ahnay Technology Solutions provides...</p>
+
+                {/* Services Section */}
+                <div className="services">
+                    <h2>
+                        Explore Our <span>SERVICES</span>
+                    </h2>
+                    <div className="parent-card">
+                        <div className="service-card">
+                            <img
+                                src="https://ahimay.com/images/software-services-img1.png"
+                                alt="Software Services"
+                            />
+                            <h3>Software Services</h3>
+                            <p>Ahimay Technology Solutions can be...</p>
+                        </div>
+                        <div className="service-card">
+                            <img
+                                src="https://ahimay.com/images/busenss-consult-img2.png"
+                                alt="Business & Technology Consulting"
+                            />
+                            <h3>Business & Technology Consulting</h3>
+                            <p>Ahimay Technology Solutions offers...</p>
+                        </div>
+                        <div className="service-card">
+                            <img
+                                src="https://ahimay.com/images/professionalserv-img6.png"
+                                alt="Professional Services"
+                            />
+                            <h3>Professional Services</h3>
+                            <p>Ahimay Technology Solutions provides...</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     );
 }
 
