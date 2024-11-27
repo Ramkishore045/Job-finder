@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink ,Link } from "react-router-dom";
 import { FaBell, FaQuestionCircle } from "react-icons/fa";
 import Breadcrumb from "./Breadcrumb";
 import "./Header.css";
@@ -16,10 +16,12 @@ function Header() {
      
       <div className="header-container">
       
-        <img
-          src="https://ahimay.com/images/Newahimaylogowhite1.png"
-          alt="Logo"
-        />
+      <Link to="/">
+      <img
+        src="https://ahimay.com/images/Newahimaylogowhite1.png"
+        alt="Logo"
+      />
+    </Link>
 
         
         <nav className="primary-nav">
@@ -66,8 +68,8 @@ function Header() {
 
        
         <div className="header-actions">
-          <FaQuestionCircle size={20} color="#000" />
-          <FaBell size={20} color="#000" />
+          <FaQuestionCircle size={20} color="#fff" />
+          <FaBell size={20} color="#fff" />
           <img
             src="https://via.placeholder.com/35"
             alt="Profile"
