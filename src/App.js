@@ -11,7 +11,7 @@ const Layout = () => {
   return (
     <>
       <Header/>
-      <Outlet /> {/* Placeholder for child routes */}
+      <Outlet /> 
     </>
   );
 };
