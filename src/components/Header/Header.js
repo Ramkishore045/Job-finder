@@ -15,7 +15,6 @@ function Header() {
     <div>
      
       <div className="header-container">
-      
       <Link to="/">
       <img
         src="https://ahimay.com/images/Newahimaylogowhite1.png"
