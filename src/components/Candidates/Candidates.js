@@ -36,7 +36,7 @@ const Candidates = () => {
     });
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5); // Number of candidates per page
+    const [itemsPerPage] = useState(10); 
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
