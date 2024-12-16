@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink ,Link } from "react-router-dom";
 import { FaBell, FaQuestionCircle } from "react-icons/fa";
+import Logo from '../../Images/Newahimaylogowhite1.png';
 import Breadcrumb from "./Breadcrumb";
 import "./Header.css";
 
@@ -16,10 +17,8 @@ function Header() {
      
       <div className="header-container">
       <Link to="/">
-      <img
-        src="https://ahimay.com/images/Newahimaylogowhite1.png"
-        alt="Logo"
-      />
+      <img src={Logo} alt="Logo" />
+      
     </Link>
 
         
