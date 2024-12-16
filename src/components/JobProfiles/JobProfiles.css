@@ -42,7 +42,7 @@
   outline: none;
 }
 .add-candidate-button {
-  background-color: #007bff;
+  background-color: #1cb086;
   color: #fff;
   padding: 10px 15px;
   text-decoration: none;
@@ -52,7 +52,7 @@
 }
 
 .add-candidate-button:hover {
-  background-color: #0056b3;
+  background-color: #1cb086;
 }
 
 
