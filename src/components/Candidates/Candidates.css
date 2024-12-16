@@ -172,6 +172,33 @@ textarea {
 .delete-btn:hover {
   color: #c82333;
 }
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.pagination-btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-btn.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.pagination-btn:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+  color: #6c757d;
+}
 
 /* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaThumbsUp, FaThumbsDown, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import "./Candidates.css";
 
 const Candidates = () => {
@@ -34,21 +35,21 @@ const Candidates = () => {
         ratings: { screening: 0, technical: 0, hr: 0 },
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(5); // Number of candidates per page
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
 
         if (name === "picture" || name === "resume") {
-
             setNewCandidate({ ...newCandidate, [name]: files[0] });
         } else if (name.startsWith("rating_")) {
-
             const ratingKey = name.split("_")[1];
             setNewCandidate({
                 ...newCandidate,
                 ratings: { ...newCandidate.ratings, [ratingKey]: Number(value) },
             });
         } else {
-
             setNewCandidate({ ...newCandidate, [name]: value });
         }
     };
@@ -57,8 +58,12 @@ const Candidates = () => {
         const newCandidateEntry = {
             id: candidates.length + 1,
             name: newCandidate.name,
-            picture: newCandidate.picture ? URL.createObjectURL(newCandidate.picture) : "https://via.placeholder.com/50",
-            resume: newCandidate.resume ? URL.createObjectURL(newCandidate.resume) : "No resume uploaded",
+            picture: newCandidate.picture
+                ? URL.createObjectURL(newCandidate.picture)
+                : "https://via.placeholder.com/50",
+            resume: newCandidate.resume
+                ? URL.createObjectURL(newCandidate.resume)
+                : "No resume uploaded",
             phone: newCandidate.phone,
             notes: newCandidate.notes,
             stage: newCandidate.stage,
@@ -70,7 +75,6 @@ const Candidates = () => {
         };
 
         setCandidates([...candidates, newCandidateEntry]);
-
 
         setNewCandidate({
             name: "",
@@ -101,12 +105,48 @@ const Candidates = () => {
         return [...thumbsUp, ...thumbsDown];
     };
 
+    const indexOfLastCandidate = currentPage * itemsPerPage;
+    const indexOfFirstCandidate = indexOfLastCandidate - itemsPerPage;
+    const currentCandidates = candidates.slice(indexOfFirstCandidate, indexOfLastCandidate);
+
+    const totalPages = Math.ceil(candidates.length / itemsPerPage);
+
+    const renderPagination = () => {
+        const pages = [...Array(totalPages).keys()].map((num) => num + 1);
+
+        return (
+            <div className="pagination-container">
+                <button
+                    className="pagination-btn"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    <FaArrowLeft />
+                </button>
+                {pages.map((page) => (
+                    <button
+                        key={page}
+                        className={`pagination-btn ${currentPage === page ? "active" : ""}`}
+                        onClick={() => setCurrentPage(page)}
+                    >
+                        {page}
+                    </button>
+                ))}
+                <button
+                    className="pagination-btn"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                >
+                    <FaArrowRight />
+                </button>
+            </div>
+        );
+    };
+
     return (
         <div className="app-container">
-
             <div className="add-candidate-form">
                 <h3 className="form-title">Add New Candidate</h3>
-
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -263,6 +303,8 @@ const Candidates = () => {
             </div>
 
 
+
+
             <div className="table-container">
                 <table className="candidate-table">
                     <thead>
@@ -283,7 +325,7 @@ const Candidates = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {candidates.map((candidate) => (
+                        {currentCandidates.map((candidate) => (
                             <tr key={candidate.id}>
                                 <td>{candidate.name}</td>
                                 <td>
@@ -325,6 +367,7 @@ const Candidates = () => {
                         ))}
                     </tbody>
                 </table>
+                {renderPagination()}
             </div>
         </div>
     );
