@@ -3,6 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import Pagination from "../Pagination/Pagination";
 import "./JobProfiles.css";
+import { NavLink } from "react-router-dom";
 
 function JobProfiles() {
   const [jobs, setJobs] = useState([]);
@@ -83,8 +84,8 @@ function JobProfiles() {
   };
 
   return (
-    <div className="candidate-container">
-      <h1 className="title">Candidate Search</h1>
+    <div className="jobprofiles-container">
+      <h1 className="title">JobProfiles Search</h1>
 
      
       <div className="top-bar">
@@ -95,6 +96,9 @@ function JobProfiles() {
           value={searchTerm}
           onChange={handleSearch}
         />
+        <NavLink to="/candidates" className="add-candidate-button">
+          Add Candidate
+        </NavLink>
       </div>
 
    

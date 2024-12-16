@@ -1,5 +1,5 @@
 /* Main Container Styling */
-.candidate-container {
+.jobprofiles-container {
   padding: 20px;
   font-family: Arial, sans-serif;
   color: #333;
@@ -17,6 +17,7 @@
   width: 100%;
   max-width: 900px;
   color: #333;
+  margin-right: 17rem;
 }
 
 /* Top bar styling for search and total jobs count */
@@ -27,6 +28,7 @@
   width: 100%;
   max-width: 900px;
   margin-bottom: 16px;
+  margin-right: 17rem;
 }
 
 /* Search Input Styling */
@@ -39,14 +41,20 @@
   font-size: 14px;
   outline: none;
 }
-
-/* Total Jobs Count Styling */
-.total-jobs {
-  font-weight: bold;
-  font-size: 14px;
-  color: #666;
-  text-align: right; 
+.add-candidate-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
+
+.add-candidate-button:hover {
+  background-color: #0056b3;
+}
+
 
 /* Table Container for Centering and Width Control */
 .table-container {
