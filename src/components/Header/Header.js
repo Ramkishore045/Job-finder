@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink ,Link } from "react-router-dom";
 import { FaBell, FaQuestionCircle } from "react-icons/fa";
 import Logo from '../../Images/Newahimaylogowhite1.png';
-import Breadcrumb from "./Breadcrumb";
+import Breadcrumb from "../Breadcrumb/Breadcrumb";
 import "./Header.css";
 
 function Header() {
