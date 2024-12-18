@@ -23,7 +23,7 @@ function App() {
     element: <Layout />, 
     children: [
     { path:'/',element:<Home />},
-    { path: "/job-profiles", element: <JobProfiles /> },
+    { path: "/reqirements", element: <JobProfiles /> },
     {path: "/contact-us", element: <Contact />},
     {path: "/login", element: <Login />},
     {path: "/about-us", element: <Home />},

@@ -25,7 +25,7 @@ function Header() {
         <nav className="primary-nav">
           <NavLink to="/" activeClassName="active">Home</NavLink>
           <NavLink to="/joblist" activeClassName="active">Find jobs</NavLink>
-          <NavLink to="/job-profiles" activeClassName="active">Job Profiles</NavLink>
+          <NavLink to="/reqirements" activeClassName="active">Reqirements</NavLink>
           {/* <NavLink to="/candidates" activeClassName="active">Candidates</NavLink> */}
           <NavLink to="/blog" activeClassName="active">Blog</NavLink>
           

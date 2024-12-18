@@ -85,9 +85,9 @@ function JobProfiles() {
 
   return (
     <div className="jobprofiles-container">
-      <h1 className="title">JobProfiles Search</h1>
+      <h1 className="title">Reqirements Search</h1>
 
-     
+
       <div className="top-bar">
         <input
           type="text"
@@ -97,14 +97,14 @@ function JobProfiles() {
           onChange={handleSearch}
         />
         <NavLink to="/candidates" className="add-candidate-button">
-          Add Candidate
+          Add New Candidate
         </NavLink>
       </div>
 
-   
+
       {error && <p className="error-message">{error}</p>}
 
-     
+
       {loading ? (
         <p>Loading jobs...</p>
       ) : (
@@ -128,7 +128,7 @@ function JobProfiles() {
                   <th
                     key={index}
                     className="table-header-cell"
-                    onClick={() => handleSort(header.split(" ").join(""))} 
+                    onClick={() => handleSort(header.split(" ").join(""))}
                   >
                     {header} {sortField === header.split(" ").join("") ? (sortOrder === "asc" ? "↑" : "↓") : ""}
                   </th>
@@ -164,7 +164,7 @@ function JobProfiles() {
         </div>
       )}
 
-      
+
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
