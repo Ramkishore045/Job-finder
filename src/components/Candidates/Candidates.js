@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { FaThumbsUp, FaThumbsDown, FaTrash } from "react-icons/fa";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaThumbsUp, FaThumbsDown, FaTrash, FaPlus, FaEdit } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaDownload } from "react-icons/fa";
 import "./Candidates.css";
+import Modal from "../Modal/index";
 
 const Candidates = () => {
     const [candidates, setCandidates] = useState([
@@ -20,79 +21,38 @@ const Candidates = () => {
             ratings: { screening: 3, technical: 3, hr: 2 },
         },
     ]);
-
-    const [newCandidate, setNewCandidate] = useState({
-        name: "",
-        picture: null,
-        resume: null,
-        phone: "",
-        notes: "",
-        stage: "Technical",
-        applicationDate: "",
-        lastProcessDate: "",
-        nextProcessDate: "",
-        appliedFor: "",
-        ratings: { screening: 0, technical: 0, hr: 0 },
-    });
-
+    
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10); 
-
-    const handleChange = (e) => {
-        const { name, value, files } = e.target;
-
-        if (name === "picture" || name === "resume") {
-            setNewCandidate({ ...newCandidate, [name]: files[0] });
-        } else if (name.startsWith("rating_")) {
-            const ratingKey = name.split("_")[1];
-            setNewCandidate({
-                ...newCandidate,
-                ratings: { ...newCandidate.ratings, [ratingKey]: Number(value) },
-            });
-        } else {
-            setNewCandidate({ ...newCandidate, [name]: value });
-        }
-    };
-
-    const addCandidate = () => {
-        const newCandidateEntry = {
-            id: candidates.length + 1,
-            name: newCandidate.name,
-            picture: newCandidate.picture
-                ? URL.createObjectURL(newCandidate.picture)
-                : "https://via.placeholder.com/50",
-            resume: newCandidate.resume
-                ? URL.createObjectURL(newCandidate.resume)
-                : "No resume uploaded",
-            phone: newCandidate.phone,
-            notes: newCandidate.notes,
-            stage: newCandidate.stage,
-            applicationDate: newCandidate.applicationDate,
-            lastProcessDate: newCandidate.lastProcessDate,
-            nextProcessDate: newCandidate.nextProcessDate,
-            appliedFor: newCandidate.appliedFor,
-            ratings: newCandidate.ratings,
-        };
-
-        setCandidates([...candidates, newCandidateEntry]);
-
-        setNewCandidate({
-            name: "",
-            picture: null,
-            resume: null,
-            phone: "",
-            notes: "",
-            stage: "Technical",
-            applicationDate: "",
-            lastProcessDate: "",
-            nextProcessDate: "",
-            appliedFor: "",
-            ratings: { screening: 0, technical: 0, hr: 0 },
-        });
-    };
+    const [itemsPerPage] = useState(10);
+    const [editCandidate, setEditCandidate] = useState(null); // For editing a candidate
 
     const deleteCandidate = (id) => {
         setCandidates(candidates.filter((candidate) => candidate.id !== id));
+    };
+
+    const handleAddCandidate = (newCandidateData) => {
+        setCandidates([...candidates, newCandidateData]);
+    };
+
+    const handleEditCandidate = (updatedCandidateData) => {
+        setCandidates(
+            candidates.map((candidate) =>
+                candidate.id === updatedCandidateData.id
+                    ? updatedCandidateData
+                    : candidate
+            )
+        );
+    };
+
+    const openModal = (candidate = null) => {
+        setEditCandidate(candidate); // Set candidate data if editing
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setEditCandidate(null); // Reset editCandidate on modal close
     };
 
     const renderRating = (rating) => {
@@ -145,165 +105,19 @@ const Candidates = () => {
 
     return (
         <div className="app-container">
-            <div className="add-candidate-form">
-                <h3 className="form-title">Add New Candidate</h3>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        addCandidate();
-                    }}
-                >
-                    <span className="label">Name:</span>
-                    <input
-                        className="input-field"
-                        type="text"
-                        name="name"
-                        placeholder="Enter Name"
-                        value={newCandidate.name}
-                        onChange={handleChange}
-                        required
-                    />
+            {/* Add Candidate Button */}
+            <button onClick={() => openModal()} className="add-btn">
+                <FaPlus /> Add Candidate
+            </button>
 
-                    <span className="label">Job Role:</span>
-                    <input
-                        className="input-field"
-                        type="text"
-                        name="appliedFor"
-                        placeholder="Enter Job Role"
-                        value={newCandidate.appliedFor}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <span className="label">Phone:</span>
-                    <input
-                        className="input-field"
-                        type="text"
-                        name="phone"
-                        placeholder="Enter Phone Number"
-                        value={newCandidate.phone}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <span className="label">Notes:</span>
-                    <textarea
-                        className="input-field"
-                        name="notes"
-                        placeholder="Add Notes"
-                        value={newCandidate.notes}
-                        onChange={handleChange}
-                    ></textarea>
-
-                    <span className="label">Application Date:</span>
-                    <input
-                        className="input-field"
-                        type="date"
-                        name="applicationDate"
-                        value={newCandidate.applicationDate}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <span className="label">Last Process Date:</span>
-                    <input
-                        className="input-field"
-                        type="date"
-                        name="lastProcessDate"
-                        value={newCandidate.lastProcessDate}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <span className="label">Next Process Date:</span>
-                    <input
-                        className="input-field"
-                        type="date"
-                        name="nextProcessDate"
-                        value={newCandidate.nextProcessDate}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <span className="label">Stage:</span>
-                    <select
-                        className="input-field"
-                        name="stage"
-                        value={newCandidate.stage}
-                        onChange={handleChange}
-                    >
-                        <option value="Technical">Technical</option>
-                        <option value="Screening">Screening</option>
-                        <option value="HR">HR Round</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Rejected">Rejected</option>
-                        <option value="Hired">Hired</option>
-                    </select>
-
-                    <span className="label">Picture:</span>
-                    <input
-                        className="input-file"
-                        type="file"
-                        name="picture"
-                        accept="image/*"
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <span className="label">Resume:</span>
-                    <input
-                        className="input-file"
-                        type="file"
-                        name="resume"
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <span className="label">Screening Rating:</span>
-                    <input
-                        className="input-field"
-                        type="number"
-                        name="rating_screening"
-                        placeholder="0-5"
-                        max={5}
-                        min={0}
-                        value={newCandidate.ratings.screening}
-                        onChange={handleChange}
-                    />
-
-                    <span className="label">Technical Rating:</span>
-                    <input
-                        className="input-field"
-                        type="number"
-                        name="rating_technical"
-                        placeholder="0-5"
-                        max={5}
-                        min={0}
-                        value={newCandidate.ratings.technical}
-                        onChange={handleChange}
-                    />
-
-                    <span className="label">HR Rating:</span>
-                    <input
-                        className="input-field"
-                        type="number"
-                        name="rating_hr"
-                        placeholder="0-5"
-                        max={5}
-                        min={0}
-                        value={newCandidate.ratings.hr}
-                        onChange={handleChange}
-                    />
-
-                    <button className="add-btn" type="submit">
-                        Add Candidate
-                    </button>
-                </form>
-            </div>
-
-
-
+            {/* Modal for adding or editing a candidate */}
+            {isModalOpen && (
+                <Modal
+                    onClose={closeModal}
+                    onSubmit={editCandidate ? handleEditCandidate : handleAddCandidate}
+                    candidate={editCandidate} // Pass the candidate data if editing
+                />
+            )}
 
             <div className="table-container">
                 <table className="candidate-table">
@@ -337,8 +151,9 @@ const Candidates = () => {
                                 </td>
                                 <td>
                                     {candidate.resume !== "No resume uploaded" ? (
+                                        
                                         <a href={candidate.resume} className="download-link" download>
-                                            Download Resume
+                                           <FaDownload /> Download Resume
                                         </a>
                                     ) : (
                                         "No resume uploaded"
@@ -358,6 +173,10 @@ const Candidates = () => {
                                 <td>{renderRating(candidate.ratings.technical)}</td>
                                 <td>{renderRating(candidate.ratings.hr)}</td>
                                 <td>
+                                    <FaEdit
+                                        className="icon edit-icon"
+                                        onClick={() => openModal(candidate)} // Open modal with the candidate data
+                                    />
                                     <FaTrash
                                         className="icon delete-icon"
                                         onClick={() => deleteCandidate(candidate.id)}

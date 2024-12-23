@@ -3,7 +3,9 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import Pagination from "../Pagination/Pagination";
 import "./JobProfiles.css";
-import { NavLink } from "react-router-dom";
+import Modal from "../Modal/index";
+import { FaPlus } from "react-icons/fa";
+//import { NavLink } from "react-router-dom";
 
 function JobProfiles() {
   const [jobs, setJobs] = useState([]);
@@ -14,6 +16,8 @@ function JobProfiles() {
   const [error, setError] = useState(null);
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -83,6 +87,12 @@ function JobProfiles() {
     setCurrentPage(page);
   };
 
+  const handleAddCandidate = (candidate) => {
+    console.log("New Candidate Data:", candidate);
+    // Perform operations like adding to the database here
+    setIsModalOpen(false); // Close modal after adding candidate
+  };
+
   return (
     <div className="jobprofiles-container">
       <h1 className="title">Reqirements Search</h1>
@@ -96,9 +106,13 @@ function JobProfiles() {
           value={searchTerm}
           onChange={handleSearch}
         />
-        <NavLink to="/candidates" className="add-candidate-button">
-          Add New Candidate
-        </NavLink>
+        <button
+          className="add-candidate-button"
+          onClick={() => setIsModalOpen(true)} 
+        >
+          <FaPlus /> Add New Candidate
+        </button>
+        
       </div>
 
 
@@ -172,6 +186,13 @@ function JobProfiles() {
         itemsPerPage={itemsPerPage}
         onItemsPerPageChange={handleItemsPerPageChange}
       />
+
+      {isModalOpen && (
+        <Modal
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleAddCandidate}
+        />
+      )}
     </div>
   );
 }
