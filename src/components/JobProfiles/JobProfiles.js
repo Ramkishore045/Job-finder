@@ -5,9 +5,9 @@ import Pagination from "../Pagination/Pagination";
 import "./JobProfiles.css";
 import Modal from "../Modal/index";
 import { FaPlus } from "react-icons/fa";
-//import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 
-function JobProfiles() {
+function JobProfiles({ addCandidate }) {
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -17,7 +17,6 @@ function JobProfiles() {
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -70,7 +69,7 @@ function JobProfiles() {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to first page when search term changes
   };
 
   const handleSort = (field) => {
@@ -80,7 +79,7 @@ function JobProfiles() {
 
   const handleItemsPerPageChange = (newItemsPerPage) => {
     setItemsPerPage(newItemsPerPage);
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to first page when items per page changes
   };
 
   const handlePageChange = (page) => {
@@ -88,15 +87,13 @@ function JobProfiles() {
   };
 
   const handleAddCandidate = (candidate) => {
-    console.log("New Candidate Data:", candidate);
-    // Perform operations like adding to the database here
+    addCandidate(candidate); // Pass the new candidate data to the parent (App.js)
     setIsModalOpen(false); // Close modal after adding candidate
   };
 
   return (
     <div className="jobprofiles-container">
-      <h1 className="title">Reqirements Search</h1>
-
+      <h1 className="title">Requirements Search</h1>
 
       <div className="top-bar">
         <input
@@ -108,16 +105,13 @@ function JobProfiles() {
         />
         <button
           className="add-candidate-button"
-          onClick={() => setIsModalOpen(true)} 
+          onClick={() => setIsModalOpen(true)}
         >
           <FaPlus /> Add New Candidate
         </button>
-        
       </div>
 
-
       {error && <p className="error-message">{error}</p>}
-
 
       {loading ? (
         <p>Loading jobs...</p>
@@ -137,14 +131,18 @@ function JobProfiles() {
                   "Client",
                   "Skill Set",
                   "Status",
-                  "Profiles in Consideration",
                 ].map((header, index) => (
                   <th
                     key={index}
                     className="table-header-cell"
                     onClick={() => handleSort(header.split(" ").join(""))}
                   >
-                    {header} {sortField === header.split(" ").join("") ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                    {header}{" "}
+                    {sortField === header.split(" ").join("") ? (
+                      sortOrder === "asc" ? "↑" : "↓"
+                    ) : (
+                      ""
+                    )}
                   </th>
                 ))}
               </tr>
@@ -163,7 +161,6 @@ function JobProfiles() {
                     <td>{job.Client}</td>
                     <td>{job.SkillSet}</td>
                     <td>{job.Status}</td>
-                    <td>{job.ProfilesinConsideration}</td>
                   </tr>
                 ))
               ) : (
@@ -178,7 +175,6 @@ function JobProfiles() {
         </div>
       )}
 
-
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
@@ -188,10 +184,7 @@ function JobProfiles() {
       />
 
       {isModalOpen && (
-        <Modal
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleAddCandidate}
-        />
+        <Modal onClose={() => setIsModalOpen(false)} onSubmit={handleAddCandidate} />
       )}
     </div>
   );

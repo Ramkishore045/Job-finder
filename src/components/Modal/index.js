@@ -1,5 +1,6 @@
-import React, { useState } from "react"; 
-import "./Modal.css"; 
+import React, { useState } from "react";
+import { FaDownload } from "react-icons/fa";
+import "./Modal.css";
 
 const Modal = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -10,27 +11,32 @@ const Modal = ({ onClose, onSubmit }) => {
     applicationDate: "",
     lastProcessDate: "",
     nextProcessDate: "",
-    stage: "Technical", // Set a default value for the stage dropdown
+    stage: "Technical",
     ratings: {
-      screening: 0, // Initialize ratings with default values
+      screening: 0,
       technical: 0,
       hr: 0,
     },
+    picture: null,
+    resume: null,
   });
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
 
     if (name.startsWith("rating_")) {
-      // Handle nested ratings object
       const ratingType = name.split("_")[1];
       setFormData({
         ...formData,
         ratings: { ...formData.ratings, [ratingType]: Number(value) },
       });
     } else if (type === "file") {
-      // Handle file input (convert to File object)
-      setFormData({ ...formData, [name]: e.target.files[0] });
+      const file = e.target.files[0];
+      if (name === "picture") {
+        setFormData({ ...formData, picture: URL.createObjectURL(file) });
+      } else if (name === "resume") {
+        setFormData({ ...formData, resume: file });
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -41,6 +47,11 @@ const Modal = ({ onClose, onSubmit }) => {
     onSubmit(formData);
     onClose();
   };
+
+ 
+  const resumeDownloadUrl = formData.resume
+    ? URL.createObjectURL(formData.resume)
+    : null;
 
   return (
     <div className="modal-backdrop">
@@ -64,9 +75,9 @@ const Modal = ({ onClose, onSubmit }) => {
           <input
             className="input-field"
             type="text"
-            name="jobRole"
+            name="appliedFor"
             placeholder="Enter Job Role"
-            value={formData.jobRole}
+            value={formData.appliedFor}
             onChange={handleChange}
             required
           />
@@ -151,6 +162,17 @@ const Modal = ({ onClose, onSubmit }) => {
             onChange={handleChange}
             required
           />
+          {formData.picture && (
+            <div>
+              <img
+                src={formData.picture}
+                alt="Preview"
+                className="image-preview"
+                width="100"
+                height="100"
+              />
+            </div>
+          )}
 
           {/* Resume */}
           <span className="label">Resume:</span>
@@ -162,6 +184,19 @@ const Modal = ({ onClose, onSubmit }) => {
             onChange={handleChange}
             required
           />
+          {formData.resume && (
+            <div>
+             
+              <a
+                href={resumeDownloadUrl}
+                download={formData.resume.name}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaDownload /> Download Resume
+              </a>
+            </div>
+          )}
 
           {/* Ratings */}
           <span className="label">Screening Rating:</span>

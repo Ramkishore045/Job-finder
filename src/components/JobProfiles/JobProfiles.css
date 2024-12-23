@@ -1,140 +1,266 @@
-/* Main Container Styling */
+/* General styles for JobProfiles component */
 .jobprofiles-container {
   padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Title Styling */
 .title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
-  margin-bottom: 16px;
-  text-align: left;
-  width: 100%;
-  max-width: 900px;
-  color: #333;
-  margin-right: 17rem;
+  margin-bottom: 20px;
 }
 
-/* Top bar styling for search and total jobs count */
 .top-bar {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
+  margin-bottom: 20px;
   align-items: center;
-  width: 100%;
-  max-width: 900px;
-  margin-bottom: 16px;
-  margin-right: 17rem;
 }
 
-/* Search Input Styling */
 .search-input {
-  padding: 8px;
-  width: 70%; 
-  max-width: 500px;
-  border: 1px solid #ccc;
+  padding: 10px;
+  width: 60%;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 14px;
-  outline: none;
+  font-size: 16px;
 }
+
 .add-candidate-button {
-  background-color: #1cb086;
-  color: #fff;
   padding: 10px 15px;
-  text-decoration: none;
-  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 16px;
   transition: background-color 0.3s ease;
 }
 
 .add-candidate-button:hover {
-  background-color: #1cb086;
+  background-color: #45a049;
 }
 
+.error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+}
 
-/* Table Container for Centering and Width Control */
+/* Table styles */
 .table-container {
-  width: 100%;
-  max-width: 1400px;
-  overflow-x: auto; 
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
-/* Table Styling */
 .jobs-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background-color: #fff;
-}
-
-.jobs-table thead {
-  background-color: #f4f6f8;
-}
-
-.table-header th {
-  padding: 10px 12px;
-  font-weight: 600;
-  font-size: 13px;
-  color: #333;
-  text-align: left;
-  border-bottom: 2px solid #ddd;
-}
-
-.table-header th.sortable:hover {
-  background-color: #e9ecef;
-  cursor: pointer;
-}
-
-/* Row and Cell Styling */
-.table-row {
-  transition: background-color 0.2s ease;
-}
-
-.table-row:hover {
-  background-color: #f1f5f9;
-}
-
-.table-cell {
-  padding: 8px 10px; 
-  font-size: 13px;
-  color: #333;
-  border-bottom: 1px solid #ddd;
-}
-
-/* Icon Placeholder for Sorting */
-.sort-icon {
-  margin-left: 8px;
-  font-size: 10px;
-  color: #888;
-}
-
-/* Checkbox Styling */
-.jobs-table input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-/* Styling for No Jobs Found Message */
-.no-jobs {
-  text-align: center;
-  padding: 15px;
-  color: #888;
-  font-size: 14px;
-}
-
-/* Specific Cell Alignment and Wrapping */
-.jobs-table td,
-.jobs-table th {
-  white-space: nowrap;
-  vertical-align: middle;
+  border-collapse: collapse;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .jobs-table th,
 .jobs-table td {
-  padding: 8px 10px; 
-  border: 1px solid #e0e0e0;
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.table-header {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.table-row {
+  transition: background-color 0.3s ease;
+}
+
+.table-row:hover {
+  background-color: #f1f1f1;
+}
+
+.table-header-cell {
+  cursor: pointer;
+  position: relative;
+}
+
+/* Apply ellipsis for text overflow */
+.jobs-table td,
+.jobs-table th {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  max-width: 200px; 
+}
+
+/* Optional: Specific column truncation */
+.jobs-table td:nth-child(2), 
+.jobs-table td:nth-child(3), 
+.jobs-table td:nth-child(4), 
+.jobs-table td:nth-child(5) {
+  max-width: 150px; 
+}
+
+/* Pagination Bar Styling */
+.pagination-container {
+  display: flex;
+  justify-content: center;  
+  align-items: center;     
+  margin-top: 20px;         
+  gap: 10px;                
+  flex-wrap: wrap;          
+}
+
+/* Pagination Button Styling */
+.pagination-button {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.pagination-button:hover {
+  background-color: #45a049;
+}
+
+.pagination-button:disabled {
+  background-color: #ccc;    
+  color: #777;
+  cursor: not-allowed;       
+}
+
+/* First, Previous, Next, Last Buttons */
+.pagination-button:first-child {
+  border-top-left-radius: 8px;   
+  border-bottom-left-radius: 8px;
+}
+
+.pagination-button:last-child {
+  border-top-right-radius: 8px; 
+  border-bottom-right-radius: 8px;
+}
+
+/* Active Page Button */
+.pagination-button.active {
+  background-color: #3e8e41; 
+  font-weight: bold;
+}
+
+.pagination-button.active:hover {
+  background-color: #2e6b2e;  
+}
+
+/* Pagination Info */
+.pagination-info {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Items Per Page Selector */
+.items-per-page-select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.items-per-page-select:hover {
+  border-color: #4CAF50;
+}
+
+.items-per-page-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 50%;
+}
+
+.modal-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-button:hover {
+  background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .add-candidate-button {
+    width: 100%;
+  }
+
+  .jobs-table th,
+  .jobs-table td {
+    padding: 10px;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .pagination-info {
+    margin-right: 0;
+  }
 }
