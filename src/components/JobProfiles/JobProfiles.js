@@ -5,18 +5,18 @@ import Pagination from "../Pagination/Pagination";
 import "./JobProfiles.css";
 import Modal from "../Modal/index";
 import { FaPlus } from "react-icons/fa";
-// import { NavLink } from "react-router-dom";
 
 function JobProfiles({ addCandidate }) {
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -68,8 +68,53 @@ function JobProfiles({ addCandidate }) {
   }, [sortedJobs, currentPage, itemsPerPage]);
 
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to first page when search term changes
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    if (value.trim() !== "") {
+      const searchSuggestions = jobs
+        .filter((job) =>
+          Object.values(job).some(
+            (jobField) =>
+              typeof jobField === "string" &&
+              jobField.toLowerCase().includes(value.toLowerCase())
+          )
+        )
+        .slice(0, 5); // Limit suggestions to top 5 results
+      setSuggestions(searchSuggestions);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && suggestions.length > 0) {
+      // Autofill the first suggestion when Enter is pressed
+      setSearchTerm(suggestions[0].Position); // Use the most relevant field
+      setSuggestions([]); // Clear suggestions
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion.Position); // Autofill the clicked suggestion
+    setSuggestions([]); // Clear suggestions
+  };
+
+  const highlightMatch = (text, query) => {
+    const parts = text.split(new RegExp(`(${query})`, "gi"));
+    return (
+      <>
+        {parts.map((part, index) =>
+          part.toLowerCase() === query.toLowerCase() ? (
+            <span key={index} className="highlight">
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
   };
 
   const handleSort = (field) => {
@@ -79,7 +124,7 @@ function JobProfiles({ addCandidate }) {
 
   const handleItemsPerPageChange = (newItemsPerPage) => {
     setItemsPerPage(newItemsPerPage);
-    setCurrentPage(1); // Reset to first page when items per page changes
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page) => {
@@ -87,8 +132,8 @@ function JobProfiles({ addCandidate }) {
   };
 
   const handleAddCandidate = (candidate) => {
-    addCandidate(candidate); // Pass the new candidate data to the parent (App.js)
-    setIsModalOpen(false); // Close modal after adding candidate
+    addCandidate(candidate);
+    setIsModalOpen(false);
   };
 
   return (
@@ -96,13 +141,32 @@ function JobProfiles({ addCandidate }) {
       <h1 className="title">Requirements Search</h1>
 
       <div className="top-bar">
-        <input
-          type="text"
-          placeholder="Search by any field..."
-          className="search-input"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search by any field..."
+            className="search-input"
+            value={searchTerm}
+            onChange={handleSearch}
+            onKeyDown={handleKeyDown}
+          />
+          {suggestions.length > 0 && searchTerm.trim() !== "" && (
+            <ul className="suggestions-list">
+              {suggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  className="suggestion-item"
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
+                  {highlightMatch(
+                    `${suggestion.Position} - ${suggestion.Location}`,
+                    searchTerm
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <button
           className="add-candidate-button"
           onClick={() => setIsModalOpen(true)}

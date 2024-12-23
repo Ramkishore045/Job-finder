@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink ,Link } from "react-router-dom";
 import { FaBell, FaQuestionCircle } from "react-icons/fa";
 import Logo from '../../Images/Newahimaylogowhite1.png';
+import User from '../../Images/user.svg';
 import Breadcrumb from "../Breadcrumb/Breadcrumb";
 import "./Header.css";
 
@@ -68,10 +69,7 @@ function Header() {
         <div className="header-actions">
           <FaQuestionCircle size={20} color="#fff" />
           <FaBell size={20} color="#fff" />
-          <img
-            src="https://via.placeholder.com/35"
-            alt="Profile"
-          />
+          <img src={User} alt="User" />
           <button className="upload-resume-btn">Upload Resume</button>
         </div>
       </div>
