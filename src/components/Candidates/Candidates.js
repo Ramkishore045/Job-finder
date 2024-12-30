@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { FaThumbsUp, FaThumbsDown, FaTrash, FaPlus, FaEdit } from "react-icons/fa";
-import { FaArrowLeft, FaArrowRight, FaDownload } from "react-icons/fa";
+import React, { useState, useMemo } from "react";
+import { FaThumbsUp, FaThumbsDown, FaTrash, FaPlus, FaEdit, FaDownload, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Modal from "../Modal/index";
 import "./Candidates.css";
 
@@ -10,14 +9,21 @@ const Candidates = ({ candidates, setCandidates }) => {
   const [itemsPerPage] = useState(10);
   const [editCandidate, setEditCandidate] = useState(null);
 
+  // State for Search and Filters
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("all"); // Filter dropdown state
+
+  // Delete Candidate
   const deleteCandidate = (id) => {
     setCandidates(candidates.filter((candidate) => candidate.id !== id));
   };
 
+  // Add Candidate
   const handleAddCandidate = (newCandidateData) => {
     setCandidates([...candidates, newCandidateData]);
   };
 
+  // Edit Candidate
   const handleEditCandidate = (updatedCandidateData) => {
     setCandidates(
       candidates.map((candidate) =>
@@ -26,6 +32,7 @@ const Candidates = ({ candidates, setCandidates }) => {
     );
   };
 
+  // Modal Handlers
   const openModal = (candidate = null) => {
     setEditCandidate(candidate);
     setIsModalOpen(true);
@@ -36,49 +43,25 @@ const Candidates = ({ candidates, setCandidates }) => {
     setEditCandidate(null);
   };
 
-  const renderRating = (rating) => {
-    const thumbsUp = Array(rating).fill(<FaThumbsUp className="icon thumbs-up" />);
-    const thumbsDown = Array(5 - rating).fill(<FaThumbsDown className="icon thumbs-down" />);
-    return [...thumbsUp, ...thumbsDown];
-  };
+  // Filtering and Searching
+  const filteredCandidates = useMemo(() => {
+    return candidates.filter((candidate) => {
+      if (selectedFilter === "all") {
+        return Object.values(candidate).some((value) =>
+          value?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      return (
+        candidate[selectedFilter]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+  }, [candidates, searchQuery, selectedFilter]);
 
+  // Pagination
   const indexOfLastCandidate = currentPage * itemsPerPage;
   const indexOfFirstCandidate = indexOfLastCandidate - itemsPerPage;
-  const currentCandidates = candidates.slice(indexOfFirstCandidate, indexOfLastCandidate);
-
-  const totalPages = Math.ceil(candidates.length / itemsPerPage);
-
-  const renderPagination = () => {
-    const pages = [...Array(totalPages).keys()].map((num) => num + 1);
-
-    return (
-      <div className="pagination-container">
-        <button
-          className="pagination-btn"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          <FaArrowLeft />
-        </button>
-        {pages.map((page) => (
-          <button
-            key={page}
-            className={`pagination-btn ${currentPage === page ? "active" : ""}`}
-            onClick={() => setCurrentPage(page)}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          className="pagination-btn"
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          <FaArrowRight />
-        </button>
-      </div>
-    );
-  };
+  const currentCandidates = filteredCandidates.slice(indexOfFirstCandidate, indexOfLastCandidate);
+  const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
 
   return (
     <div className="app-container">
@@ -94,67 +77,85 @@ const Candidates = ({ candidates, setCandidates }) => {
         />
       )}
 
+      {/* Search and Filters */}
+      <div className="top-bar">
+        <div className="filter-container">
+          <input
+            type="text"
+            placeholder={`Search by ${selectedFilter}`}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <select
+            value={selectedFilter}
+            onChange={(e) => setSelectedFilter(e.target.value)}
+            className="filter-dropdown"
+          >
+            <option value="all">All Fields</option>
+            <option value="firstName">First Name</option>
+            <option value="lastName">Last Name</option>
+            <option value="experience">Experience</option>
+            <option value="skillSet">Skill Set</option>
+            <option value="currentCompany">Current Company</option>
+            <option value="currentLocation">Current Location</option>
+            <option value="preferredLocation">Preferred Location</option>
+            <option value="email">Email</option>
+            <option value="mobile">Mobile</option>
+          </select>
+        </div>
+      </div>
+
       <div className="table-container">
         <table className="candidate-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Picture</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Experience (Years)</th>
+              <th>Skill Set</th>
+              <th>Current Company</th>
+              <th>Current Location</th>
+              <th>Preferred Location</th>
+              <th>Email ID</th>
+              <th>Mobile</th>
               <th>Resume</th>
-              <th>Phone</th>
-              <th>Notes</th>
-              <th>Stage</th>
-              <th>Application Date</th>
-              <th>Next Process Date</th>
-              <th>Applied For</th>
-              <th>Screening Rating</th>
-              <th>Technical Rating</th>
-              <th>HR Rating</th>
+              <th>Date of Receipt</th>
+              <th>Date Modified</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentCandidates.map((candidate) => (
               <tr key={candidate.id}>
-                <td>{candidate.name}</td>
+                <td>{candidate.firstName || "N/A"}</td>
+                <td>{candidate.lastName || "N/A"}</td>
+                <td>{candidate.experience || "0"}</td>
+                <td>{Array.isArray(candidate.skillSet) ? candidate.skillSet.join(", ") : "None"}</td>
+                <td>{candidate.currentCompany || "Not Specified"}</td>
+                <td>{candidate.currentLocation || "Not Specified"}</td>
+                <td>{candidate.preferredLocation || "Not Specified"}</td>
+                <td>{candidate.email || "N/A"}</td>
+                <td>{candidate.mobile || "N/A"}</td>
                 <td>
-                  <img
-                    src={candidate.picture || "https://via.placeholder.com/50"}
-                    alt="candidate"
-                    className="candidate-picture"
-                  />
-                </td>
-                <td>
-                  {candidate.resume !== "No resume uploaded" ? (
-                    
+                  {candidate.resume ? (
                     <a
                       href={
                         typeof candidate.resume === "object" && candidate.resume instanceof File
-                          ? URL.createObjectURL(candidate.resume) 
-                          : candidate.resume 
+                          ? URL.createObjectURL(candidate.resume)
+                          : candidate.resume
                       }
                       className="download-link"
                       download
                     >
-                      <FaDownload /> Download Resume
+                      <FaDownload /> Download
                     </a>
                   ) : (
                     "No resume uploaded"
                   )}
                 </td>
-                <td>{candidate.phone}</td>
-                <td>{candidate.notes}</td>
-                <td>
-                  <span className={`stage-name ${candidate.stage.toLowerCase()}`}>
-                    {candidate.stage}
-                  </span>
-                </td>
-                <td>{candidate.applicationDate}</td>
-                <td>{candidate.nextProcessDate}</td>
-                <td>{candidate.appliedFor}</td>
-                <td>{renderRating(candidate.ratings.screening)}</td>
-                <td>{renderRating(candidate.ratings.technical)}</td>
-                <td>{renderRating(candidate.ratings.hr)}</td>
+                <td>{candidate.dateOfReceipt || "N/A"}</td>
+                <td>{candidate.dateModified || "N/A"}</td>
                 <td>
                   <FaEdit className="icon edit-icon" onClick={() => openModal(candidate)} />
                   <FaTrash className="icon delete-icon" onClick={() => deleteCandidate(candidate.id)} />
@@ -162,8 +163,33 @@ const Candidates = ({ candidates, setCandidates }) => {
               </tr>
             ))}
           </tbody>
+
         </table>
-        {renderPagination()}
+        <div className="pagination-container">
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            <FaArrowLeft />
+          </button>
+          {[...Array(totalPages).keys()].map((num) => (
+            <button
+              key={num + 1}
+              className={`pagination-btn ${currentPage === num + 1 ? "active" : ""}`}
+              onClick={() => setCurrentPage(num + 1)}
+            >
+              {num + 1}
+            </button>
+          ))}
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            <FaArrowRight />
+          </button>
+        </div>
       </div>
     </div>
   );

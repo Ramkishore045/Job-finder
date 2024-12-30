@@ -1,6 +1,7 @@
-// Import the Firebase libraries you need
+// firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -11,10 +12,19 @@ const firebaseConfig = {
   messagingSenderId: "329238607270",
   appId: "1:329238607270:web:d51cd3d32e3abddd190b67",
 };
-
-// Initialize Firebase app
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Export Firebase services
-export const db = getFirestore(app);
-export default app;
+// Firestore Database
+const db = getFirestore(app);
+
+// Firebase Storage
+const storage = getStorage(app);
+
+export { db, storage };
+
+
+
+
+
+

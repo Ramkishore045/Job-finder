@@ -4,34 +4,55 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
 
 .title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: #333;
 }
 
+/* Top Bar with Search and Add Button */
 .top-bar {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
   align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-.search-container{
-  position: relative;
-  width: 60%;
+.filter-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 60%;
+}
+
+.filter-dropdown {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.filter-dropdown:focus {
+  outline: none;
+  border-color: #4CAF50;
 }
 
 .search-input {
   padding: 10px;
-  width: 100%;
+  flex-grow: 1;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
 }
 
+/* Add Candidate Button */
 .add-candidate-button {
   padding: 10px 15px;
   background-color: #4CAF50;
@@ -43,6 +64,7 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  gap: 5px;
   transition: background-color 0.3s ease;
 }
 
@@ -56,6 +78,7 @@
   margin-top: 10px;
 }
 
+/* Suggestions List */
 .suggestions-list {
   position: absolute;
   top: 100%;
@@ -87,7 +110,6 @@
   color: #007bff;
 }
 
-
 /* Table styles */
 .table-container {
   margin-top: 20px;
@@ -107,52 +129,55 @@
   border: 1px solid #ddd;
 }
 
-.table-header {
+.jobs-table th {
   background-color: #f4f4f4;
   font-weight: bold;
+  cursor: pointer;
 }
 
-.table-row {
+.jobs-table th:hover {
+  background-color: #eaeaea;
+}
+
+.jobs-table td {
+  color: #333;
+}
+
+.jobs-table .table-row {
   transition: background-color 0.3s ease;
 }
 
-.table-row:hover {
-  background-color: #f1f1f1;
+.jobs-table .table-row:hover {
+  background-color: #f9f9f9;
 }
 
-.table-header-cell {
-  cursor: pointer;
-  position: relative;
-}
-
-/* Apply ellipsis for text overflow */
+/* Ellipsis for Text Overflow */
 .jobs-table td,
 .jobs-table th {
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
-  max-width: 200px; 
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 /* Optional: Specific column truncation */
-.jobs-table td:nth-child(2), 
-.jobs-table td:nth-child(3), 
-.jobs-table td:nth-child(4), 
+.jobs-table td:nth-child(2),
+.jobs-table td:nth-child(3),
+.jobs-table td:nth-child(4),
 .jobs-table td:nth-child(5) {
-  max-width: 150px; 
+  max-width: 150px;
 }
 
-/* Pagination Bar Styling */
+/* Pagination Styles */
 .pagination-container {
   display: flex;
-  justify-content: center;  
-  align-items: center;     
-  margin-top: 20px;         
-  gap: 10px;                
-  flex-wrap: wrap;          
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-/* Pagination Button Styling */
 .pagination-button {
   padding: 8px 15px;
   border: 1px solid #ddd;
@@ -169,36 +194,19 @@
 }
 
 .pagination-button:disabled {
-  background-color: #ccc;    
+  background-color: #ccc;
   color: #777;
-  cursor: not-allowed;       
+  cursor: not-allowed;
 }
 
-/* First, Previous, Next, Last Buttons */
-.pagination-button:first-child {
-  border-top-left-radius: 8px;   
-  border-bottom-left-radius: 8px;
-}
-
-.pagination-button:last-child {
-  border-top-right-radius: 8px; 
-  border-bottom-right-radius: 8px;
-}
-
-/* Active Page Button */
 .pagination-button.active {
-  background-color: #3e8e41; 
+  background-color: #3e8e41;
   font-weight: bold;
 }
 
-.pagination-button.active:hover {
-  background-color: #2e6b2e;  
-}
-
-/* Pagination Info */
 .pagination-info {
-  font-size: 16px;
-  color: #333;
+  font-size: 14px;
+  color: #555;
 }
 
 /* Items Per Page Selector */
@@ -215,12 +223,7 @@
   border-color: #4CAF50;
 }
 
-.items-per-page-select:focus {
-  outline: none;
-  border-color: #4CAF50;
-}
-
-/* Modal styles */
+/* Modal Styles */
 .modal {
   position: fixed;
   top: 0;
@@ -238,7 +241,8 @@
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  width: 50%;
+  width: 90%;
+  max-width: 500px;
 }
 
 .modal-header {
@@ -270,7 +274,12 @@
 @media (max-width: 768px) {
   .top-bar {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    gap: 10px;
   }
 
   .search-input {
@@ -280,24 +289,27 @@
 
   .add-candidate-button {
     width: 100%;
+    justify-content: center;
   }
 
   .jobs-table th,
   .jobs-table td {
     padding: 10px;
+    font-size: 14px;
   }
 
   .pagination-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 10px;
   }
 
   .pagination-button {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   .pagination-info {
-    margin-right: 0;
+    text-align: center;
   }
 }

@@ -2,6 +2,7 @@
 .app-container {
   font-family: 'Arial', sans-serif;
   padding: 20px;
+  position: relative;
 }
 
 /* Add Candidate Button */
@@ -18,7 +19,8 @@
   gap: 8px;
   position: absolute;
   right: 20px;
-  top: 130px;
+  top: 20px;
+  transition: background-color 0.3s ease;
 }
 
 .add-btn:hover {
@@ -29,9 +31,38 @@
   outline: none;
 }
 
+/* Search and Filter Container */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 60px;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.filter-container {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-input {
+  padding: 10px;
+  font-size: 16px;
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
 /* Table Styles */
 .table-container {
-  margin-top: 60px;
+  margin-top: 20px;
   overflow-x: auto;
 }
 
@@ -45,11 +76,11 @@
 .candidate-table th,
 .candidate-table td {
   padding: 12px 15px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .candidate-table th {
-  background-color: #f4f4f4;
+  background-color: #f8f9fa;
   font-weight: bold;
 }
 
@@ -57,62 +88,39 @@
   background-color: #f9f9f9;
 }
 
-/* Table Cells */
-.candidate-picture {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.candidate-table tr:hover {
+  background-color: #f1f1f1;
+  transition: background-color 0.2s ease;
 }
 
+/* Resume Download Link */
 .download-link {
   color: #007bff;
   text-decoration: none;
+  font-size: 14px;
 }
 
 .download-link:hover {
   text-decoration: underline;
 }
 
-/* Stage Column */
-.stage-name {
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-.stage-name.technical {
-  background-color: #f4b400;
-  color: white;
-}
-
-.stage-name.hr {
-  background-color: #1e88e5;
-  color: white;
-}
-
-.stage-name.screening {
-  background-color: #00bcd4;
-  color: white;
-}
-
-/* Rating Icons */
+/* Icons for Actions */
 .icon {
   cursor: pointer;
-  color: #ff8c00;
+  font-size: 18px;
 }
 
 .icon:hover {
-  color: #ff5722;
+  opacity: 0.8;
 }
 
-.thumbs-up {
-  color: green;
-  margin-right: 3px;
+.edit-icon {
+  color: #ffc107;
+  margin-right: 8px;
 }
 
-.thumbs-down {
-  color: red;
-  margin-left: 3px;
+.delete-icon {
+  color: #dc3545;
 }
 
 /* Pagination Styles */
@@ -120,16 +128,17 @@
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  gap: 5px;
 }
 
 .pagination-btn {
   padding: 8px 16px;
-  margin: 0 5px;
   border: 1px solid #ddd;
   background-color: white;
   color: #333;
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .pagination-btn:hover {
@@ -144,12 +153,25 @@
 .pagination-btn.active {
   background-color: #4CAF50;
   color: white;
+  border-color: #4CAF50;
 }
 
-.edit-icon {
-  margin-right: 10px; /* Space between Edit and Delete icons */
-}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .filter-container {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-.delete-icon {
-  margin-left: 10px; /* Optional: Adds space on the left of the Delete icon */
+  .add-btn {
+    right: 10px;
+    top: 10px;
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .pagination-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
 }

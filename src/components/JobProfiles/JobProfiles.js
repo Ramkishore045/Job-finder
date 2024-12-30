@@ -2,14 +2,14 @@ import React, { useState, useEffect, useMemo } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import Pagination from "../Pagination/Pagination";
-import "./JobProfiles.css";
 import Modal from "../Modal/index";
 import { FaPlus } from "react-icons/fa";
+import "./JobProfiles.css";
 
-function JobProfiles({ addCandidate }) {
+function JobProfiles({ addCandidate, isJobSeeker }) {
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("all"); // Filter dropdown state
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -18,6 +18,7 @@ function JobProfiles({ addCandidate }) {
   const [sortOrder, setSortOrder] = useState("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Fetch jobs from Firestore
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -39,16 +40,24 @@ function JobProfiles({ addCandidate }) {
     fetchJobs();
   }, []);
 
+  // Filter jobs based on dropdown and search term
   const filteredJobs = useMemo(() => {
-    return jobs.filter((job) =>
-      Object.values(job).some(
-        (value) =>
-          typeof value === "string" &&
-          value.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [jobs, searchTerm]);
+    return jobs.filter((job) => {
+      if (selectedFilter === "all") {
+        return Object.values(job).some(
+          (value) =>
+            typeof value === "string" &&
+            value.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+      return (
+        job[selectedFilter] &&
+        job[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+  }, [jobs, searchTerm, selectedFilter]);
 
+  // Sort filtered jobs
   const sortedJobs = useMemo(() => {
     if (!sortField) return filteredJobs;
     return [...filteredJobs].sort((a, b) => {
@@ -60,6 +69,7 @@ function JobProfiles({ addCandidate }) {
     });
   }, [filteredJobs, sortField, sortOrder]);
 
+  // Paginate jobs
   const totalPages = Math.ceil(sortedJobs.length / itemsPerPage);
   const paginatedJobs = useMemo(() => {
     const indexOfLastJob = currentPage * itemsPerPage;
@@ -67,54 +77,14 @@ function JobProfiles({ addCandidate }) {
     return sortedJobs.slice(indexOfFirstJob, indexOfLastJob);
   }, [sortedJobs, currentPage, itemsPerPage]);
 
+  // Handlers
   const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-
-    if (value.trim() !== "") {
-      const searchSuggestions = jobs
-        .filter((job) =>
-          Object.values(job).some(
-            (jobField) =>
-              typeof jobField === "string" &&
-              jobField.toLowerCase().includes(value.toLowerCase())
-          )
-        )
-        .slice(0, 5); // Limit suggestions to top 5 results
-      setSuggestions(searchSuggestions);
-    } else {
-      setSuggestions([]);
-    }
+    setSearchTerm(e.target.value);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && suggestions.length > 0) {
-      // Autofill the first suggestion when Enter is pressed
-      setSearchTerm(suggestions[0].Position); // Use the most relevant field
-      setSuggestions([]); // Clear suggestions
-    }
-  };
-
-  const handleSuggestionClick = (suggestion) => {
-    setSearchTerm(suggestion.Position); // Autofill the clicked suggestion
-    setSuggestions([]); // Clear suggestions
-  };
-
-  const highlightMatch = (text, query) => {
-    const parts = text.split(new RegExp(`(${query})`, "gi"));
-    return (
-      <>
-        {parts.map((part, index) =>
-          part.toLowerCase() === query.toLowerCase() ? (
-            <span key={index} className="highlight">
-              {part}
-            </span>
-          ) : (
-            part
-          )
-        )}
-      </>
-    );
+  const handleFilterChange = (e) => {
+    setSelectedFilter(e.target.value);
+    setSearchTerm(""); // Reset search term when filter changes
   };
 
   const handleSort = (field) => {
@@ -138,34 +108,37 @@ function JobProfiles({ addCandidate }) {
 
   return (
     <div className="jobprofiles-container">
-      <h1 className="title">Requirements Search</h1>
+      <h1 className="title">Requirements</h1>
 
+      {/* Top Bar with Filter and Search */}
       <div className="top-bar">
-        <div className="search-container">
+        <div className="filter-container">
           <input
             type="text"
-            placeholder="Search by any field..."
+            placeholder={`Search by ${selectedFilter}`}
             className="search-input"
             value={searchTerm}
             onChange={handleSearch}
-            onKeyDown={handleKeyDown}
           />
-          {suggestions.length > 0 && searchTerm.trim() !== "" && (
-            <ul className="suggestions-list">
-              {suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  className="suggestion-item"
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  {highlightMatch(
-                    `${suggestion.Position} - ${suggestion.Location}`,
-                    searchTerm
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
+          <select
+            value={selectedFilter}
+            onChange={handleFilterChange}
+            className="filter-dropdown"
+          >
+            <option value="all">All Fields</option>
+            <option value="DateofReceipt">Date of Receipt</option>
+            <option value="JobTitle">Job Title</option>
+            <option value="JDProvided">JD Provided</option>
+            <option value="Experience">Experience</option>
+            <option value="Location">Location</option>
+            <option value="WorkMode">Work Mode</option>
+            <option value="VISAType">VISA Type</option>
+            <option value="ContractTenure">Contract Tenure</option>
+            <option value="BillingRate">Billing Rate</option>
+            <option value="Client">Client</option>
+            <option value="StatusUpdate">Status Update</option>
+            <option value="Reference">Reference</option>
+          </select>
         </div>
         <button
           className="add-candidate-button"
@@ -175,61 +148,62 @@ function JobProfiles({ addCandidate }) {
         </button>
       </div>
 
+      {/* Error Message */}
       {error && <p className="error-message">{error}</p>}
 
+      {/* Job Table */}
       {loading ? (
         <p>Loading jobs...</p>
       ) : (
         <div className="table-container">
           <table className="jobs-table">
             <thead>
-              <tr className="table-header">
-                {[
-                  "Date of Receipt",
-                  "Position",
-                  "Location",
-                  "Type",
-                  "Experience",
-                  "Rate",
-                  "Work Authorization",
-                  "Client",
-                  "Skill Set",
-                  "Status",
-                ].map((header, index) => (
-                  <th
-                    key={index}
-                    className="table-header-cell"
-                    onClick={() => handleSort(header.split(" ").join(""))}
-                  >
-                    {header}{" "}
-                    {sortField === header.split(" ").join("") ? (
-                      sortOrder === "asc" ? "↑" : "↓"
-                    ) : (
-                      ""
-                    )}
-                  </th>
-                ))}
+              <tr>
+                <th onClick={() => handleSort("DateofReceipt")}>
+                  Date of Receipt
+                </th>
+                <th onClick={() => handleSort("JobTitle")}>Job Title</th>
+                <th onClick={() => handleSort("JDProvided")}>JD Provided (Y/N)</th>
+                <th onClick={() => handleSort("Experience")}>Experience</th>
+                <th onClick={() => handleSort("Location")}>Location</th>
+                <th onClick={() => handleSort("WorkMode")}>Work Mode</th>
+                <th onClick={() => handleSort("VISAType")}>VISA Type</th>
+                <th onClick={() => handleSort("ContractTenure")}>
+                  Contract Tenure
+                </th>
+                <th onClick={() => handleSort("BillingRate")}>
+                  {isJobSeeker ? "***" : "Billing Rate"}
+                </th>
+                <th onClick={() => handleSort("Client")}>
+                  {isJobSeeker ? "***" : "Client"}
+                </th>
+                <th onClick={() => handleSort("StatusUpdate")}>
+                  {isJobSeeker ? "***" : "Status Update"}
+                </th>
+                <th onClick={() => handleSort("Reference")}>Reference</th>
               </tr>
             </thead>
             <tbody>
               {paginatedJobs.length > 0 ? (
                 paginatedJobs.map((job) => (
-                  <tr key={job.id} className="table-row">
+                  <tr key={job.id}>
                     <td>{job.DateofReceipt}</td>
-                    <td>{job.Position}</td>
-                    <td>{job.Location}</td>
-                    <td>{job.Type}</td>
+                    <td>{job.JobTitle}</td>
+                    <td>{job.JDProvided}</td>
                     <td>{job.Experience}</td>
-                    <td>{job.Rate}</td>
-                    <td>{job.VisaStatus}</td>
-                    <td>{job.Client}</td>
-                    <td>{job.SkillSet}</td>
-                    <td>{job.Status}</td>
+                    <td>{job.Location}</td>
+                    <td>{job.WorkMode}</td>
+                    <td>{job.VISAType}</td>
+                    <td>{job.ContractTenure}</td>
+                    <td>{isJobSeeker ? "***" : job.BillingRate}</td>
+                    <td>{isJobSeeker ? "***" : job.Client}</td>
+                    <td>{isJobSeeker ? "***" : job.StatusUpdate}</td>
+                    <td>{job.Reference}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="11" className="no-jobs">
+                  <td colSpan="12" className="no-jobs">
                     No jobs found for "{searchTerm}"
                   </td>
                 </tr>
@@ -239,6 +213,7 @@ function JobProfiles({ addCandidate }) {
         </div>
       )}
 
+      {/* Pagination */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
@@ -247,6 +222,7 @@ function JobProfiles({ addCandidate }) {
         onItemsPerPageChange={handleItemsPerPageChange}
       />
 
+      {/* Modal */}
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)} onSubmit={handleAddCandidate} />
       )}

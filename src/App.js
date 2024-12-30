@@ -22,17 +22,19 @@ function App() {
   const [candidates, setCandidates] = useState([
     {
       id: 1,
-      name: "John Doe",
-      picture: "https://via.placeholder.com/50",
-      resume: "https://example.com/resume.pdf",
-      phone: "+1 465 456 4656",
-      notes: "Need to do document verification.",
-      stage: "Technical",
-      applicationDate: "2021-02-02",
-      lastProcessDate: "2021-02-05",
-      nextProcessDate: "2021-02-18",
-      appliedFor: "Associate Product Manager",
-      ratings: { screening: 3, technical: 3, hr: 2 },
+        firstName: "John",
+        lastName: "Doe",
+        experience: "5", 
+        skillSet: "Java", 
+        currentCompany: "XYZ Corporation", 
+        currentLocation: "New York, NY", 
+        preferredLocation: "Remote", 
+        email: "john.doe@example.com", 
+        mobile: "555-123-4567", 
+        resume: "path/to/resume.pdf", 
+        dateOfReceipt: "2024-07-05", 
+        dateModified: "2024-07-05" ,
+      
     },
   ]);
   const addCandidate = (newCandidateData) => {

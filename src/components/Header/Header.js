@@ -25,12 +25,12 @@ function Header() {
         
         <nav className="primary-nav">
           <NavLink to="/" activeClassName="active">Home</NavLink>
-          <NavLink to="/joblist" activeClassName="active">Find jobs</NavLink>
+          {/* <NavLink to="/joblist" activeClassName="active">Find jobs</NavLink> */}
           <NavLink to="/reqirements" activeClassName="active">Reqirements</NavLink>
           <NavLink to="/candidates" activeClassName="active">Profiles</NavLink>
-          <NavLink to="/blog" activeClassName="active">Blog</NavLink>
+          {/* <NavLink to="/blog" activeClassName="active">Blog</NavLink> */}
           
-          <div
+          {/* <div
             className="dropdown"
             onMouseEnter={togglePagesDropdown}
             onMouseLeave={togglePagesDropdown}
@@ -62,7 +62,7 @@ function Header() {
                 <NavLink to="/contact-us">Contact Us</NavLink>
               </div>
             )}
-          </div>
+          </div> */}
         </nav>
 
        
@@ -70,7 +70,7 @@ function Header() {
           <FaQuestionCircle size={20} color="#fff" />
           <FaBell size={20} color="#fff" />
           <img src={User} alt="User" />
-          <button className="upload-resume-btn">Upload Resume</button>
+          {/* <button className="upload-resume-btn">Upload Resume</button> */}
         </div>
       </div>
 
