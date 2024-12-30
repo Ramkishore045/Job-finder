@@ -4,7 +4,7 @@ import { db } from "../../firebase/firebase";
 import Pagination from "../Pagination/Pagination";
 import Modal from "../Modal/index";
 import { FaPlus } from "react-icons/fa";
-import "./JobProfiles.css";
+import "./Requirements.css";
 
 function JobProfiles({ addCandidate, isJobSeeker }) {
   const [jobs, setJobs] = useState([]);

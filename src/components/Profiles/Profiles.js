@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { FaThumbsUp, FaThumbsDown, FaTrash, FaPlus, FaEdit, FaDownload, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Modal from "../Modal/index";
-import "./Candidates.css";
+import "./Profiles.css";
 
 const Candidates = ({ candidates, setCandidates }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,6 +65,7 @@ const Candidates = ({ candidates, setCandidates }) => {
 
   return (
     <div className="app-container">
+      <h1 className="title">Profiles</h1>
       <button onClick={() => openModal()} className="add-btn">
         <FaPlus /> Add Candidate
       </button>
@@ -139,21 +140,28 @@ const Candidates = ({ candidates, setCandidates }) => {
                 <td>{candidate.mobile || "N/A"}</td>
                 <td>
                   {candidate.resume ? (
-                    <a
-                      href={
-                        typeof candidate.resume === "object" && candidate.resume instanceof File
-                          ? URL.createObjectURL(candidate.resume)
-                          : candidate.resume
-                      }
-                      className="download-link"
-                      download
-                    >
-                      <FaDownload /> Download
-                    </a>
+                    typeof candidate.resume === "object" && candidate.resume instanceof File ? (
+                      <a
+                        href={URL.createObjectURL(candidate.resume)}
+                        className="download-link"
+                        download
+                      >
+                        <FaDownload /> Download
+                      </a>
+                    ) : (
+                      <a
+                        href={candidate.resume}
+                        className="download-link"
+                        download
+                      >
+                        <FaDownload /> Download
+                      </a>
+                    )
                   ) : (
                     "No resume uploaded"
                   )}
                 </td>
+
                 <td>{candidate.dateOfReceipt || "N/A"}</td>
                 <td>{candidate.dateModified || "N/A"}</td>
                 <td>
