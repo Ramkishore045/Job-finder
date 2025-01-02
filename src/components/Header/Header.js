@@ -28,6 +28,7 @@ function Header() {
           {/* <NavLink to="/joblist" activeClassName="active">Find jobs</NavLink> */}
           <NavLink to="/reqirements" activeClassName="active">Reqirements</NavLink>
           <NavLink to="/profiles" activeClassName="active">Profiles</NavLink>
+          <NavLink to="/login">Login</NavLink>
           {/* <NavLink to="/blog" activeClassName="active">Blog</NavLink> */}
           
           {/* <div

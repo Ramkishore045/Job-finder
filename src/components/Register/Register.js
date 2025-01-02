@@ -68,7 +68,7 @@ const Register = () => {
     return (
         <div className="register-container">
             <div className="register-box">
-                <h1 className="register-title">Create Link free account</h1>
+                <h1 className="register-title">Register For New Account</h1>
 
 
                 <div className="toggle-buttons">
