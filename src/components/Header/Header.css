@@ -1,161 +1,249 @@
-  .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #0d1117;
-    border-bottom: 1px solid #eaeaea;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .header-container img {
-    height: 40px;
-  }
-  
+/* Responsive Header */
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #0d1117;
+  border-bottom: 1px solid #eaeaea;
+  font-family: 'Arial', sans-serif;
+}
+
+.header-container img {
+  height: 40px;
+}
+
+/* Navigation */
+.primary-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.primary-nav a {
+  text-decoration: none;
+  color: #eaeaea;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+
+.primary-nav a:hover {
+  color: #1cb086;
+}
+
+.primary-nav a.active {
+  color: #1cb086;
+  font-weight: bold;
+}
+
+.primary-nav a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1cb086;
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-actions img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+/* Upload Resume Button */
+.upload-resume-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #1cb086;
+  border-radius: 5px;
+  color: #1cb086;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-resume-btn:hover {
+  background: #1cb086;
+  color: #ffffff;
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-title {
+  cursor: pointer;
+  color: #1cb086;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%; 
+  left: 0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px 0; 
+  z-index: 10;
+  width: 200px;
+  display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Dropdown Items */
+.dropdown-menu a,
+.dropdown-item {
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dropdown-menu a:hover,
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+  color: #1cb086;
+}
+
+/* Submenu */
+.dropdown-item {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px 0;
+  z-index: 10;
+  width: 180px;
+  display: none;
+}
+
+.dropdown-item:hover .dropdown-submenu {
+  display: block;
+}
+
+.dropdown-submenu a {
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-submenu a:hover {
+  background-color: #f5f5f5;
+  color: #1cb086;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
   .primary-nav {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .primary-nav a {
-    text-decoration: none;
-    color: #eaeaea;
-    font-size: 16px;
-    font-weight: 500;
-    position: relative;
-  }
-  
-  .primary-nav a:hover {
-    color: #1cb086;
-  }
-  
-  .primary-nav a.active {
-    color: #1cb086;
-    font-weight: bold;
-  }
-  
-  .primary-nav a.active::after {
-    content: "";
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #1cb086;
-  }
-  
-  .header-actions {
-    display: flex;
-    align-items: center;
     gap: 15px;
   }
-  
-  .header-actions img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+
+  .primary-nav a {
+    font-size: 14px;
   }
-  
+
+  .header-actions {
+    gap: 10px;
+  }
+
   .upload-resume-btn {
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid #1cb086;
-    border-radius: 5px;
-    color: #1cb086;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    padding: 6px 12px;
+    font-size: 12px;
   }
-  
-  .upload-resume-btn:hover {
-    background: #1cb086;
-    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
   }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
+  .primary-nav {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    display: none; /* Hide menu initially */
   }
-  
-  .dropdown-title {
-    cursor: pointer;
-    color: #1cb086;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+
+  .primary-nav.show {
+    display: flex; /* Show menu when active */
   }
-  
+
+  .primary-nav a {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .upload-resume-btn {
+    width: 100%;
+    text-align: center;
+  }
+
   .dropdown-menu {
-    position: absolute;
-    top: 110%; 
-    left: 0;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 10px 0; 
-    z-index: 10;
-    width: 200px;
-  }
-  
-  .dropdown-menu a,
-  .dropdown-item {
-    display: block;
-    padding: 10px 20px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  }
-  
-  .dropdown-menu a:hover,
-  .dropdown-item:hover {
-    background-color: #f5f5f5;
-    color: #1cb086;
-  }
-  
-  .dropdown-item {
+    width: 100%;
     position: relative;
-    cursor: pointer;
   }
-  
-  .dropdown-submenu {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 10px 0;
-    z-index: 10;
-    width: 180px;
-  }
-  
-  .dropdown-submenu a {
-    display: block;
-    padding: 10px 20px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.2s ease;
-  }
-  
-  .dropdown-submenu a:hover {
-    background-color: #f5f5f5;
-    color: #1cb086;
-  }
-  
-  
-  .dropdown-item:hover .dropdown-submenu {
-    display: block;
-  }
-  
-  .dropdown-submenu {
-    display: none;
-  }
-  
 
-  
-  
+  .dropdown-submenu {
+    width: 100%;
+    left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container img {
+    height: 30px;
+  }
+
+  .primary-nav a {
+    font-size: 13px;
+  }
+
+  .header-actions img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .upload-resume-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+}

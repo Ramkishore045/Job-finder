@@ -1,0 +1,169 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto; /* Scroll for long content */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Close Button */
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .close-btn:hover {
+    color: #ff0000;
+  }
+  
+  /* Form Styling */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Labels */
+  label {
+    font-weight: 600;
+    margin-top: 5px;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  /* Input Fields */
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  /* Input Focus Effect */
+  input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Modal Actions */
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  /* Buttons */
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Save Button */
+  button[type="submit"] {
+    background: #007bff;
+    color: white;
+  }
+  
+  button[type="submit"]:hover {
+    background: #0056b3;
+  }
+  
+  /* Cancel Button */
+  button[type="button"] {
+    background: #ccc;
+  }
+  
+  button[type="button"]:hover {
+    background: #999;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 95%;
+      max-width: 400px;
+    }
+  
+    input {
+      font-size: 13px;
+      padding: 8px;
+    }
+  
+    button {
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .modal-content {
+      width: 100%;
+      max-width: 350px;
+      padding: 15px;
+    }
+  
+    .close-btn {
+      top: 10px;
+      right: 10px;
+    }
+  
+    label {
+      font-size: 13px;
+    }
+  
+    input {
+      font-size: 12px;
+      padding: 7px;
+    }
+  
+    button {
+      font-size: 12px;
+      padding: 7px 10px;
+    }
+  }
+  
+  /* Fade-in Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
