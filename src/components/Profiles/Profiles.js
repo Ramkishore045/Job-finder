@@ -1,18 +1,12 @@
-import React, { useState, useMemo } from "react";
-import {
-  FaTrash,
-  FaEdit,
-  FaDownload,
-  FaPlus,
-  FaArrowLeft,
-  FaArrowRight,
-  FaTimes,
-  FaSearch,
-} from "react-icons/fa";
-import Modal from "../Modal/index"; 
+import React, { useState, useEffect, useMemo } from "react";
+import { FaTrash, FaEdit, FaPlus, FaArrowLeft, FaArrowRight, FaTimes, FaSearch, FaDownload } from "react-icons/fa";
+import { db } from "../../firebase/firebase"; // Ensure correct path
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from "firebase/firestore";
+import Modal from "../Modal/index";
 import "./Profiles.css";
 
-const Candidates = ({ candidates, setCandidates, isExternalUser }) => {
+const Candidates = ({ isExternalUser }) => {
+  const [candidates, setCandidates] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -20,40 +14,102 @@ const Candidates = ({ candidates, setCandidates, isExternalUser }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
 
-  
-  const handleAddCandidate = (newCandidateData) => {
+  // Fetch candidates from Firestore
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "candidates"));
+        const candidatesData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCandidates(candidatesData);
+      } catch (error) {
+        console.error("Error fetching candidates:", error);
+      }
+    };
+
+    fetchCandidates();
+  }, []);
+
+
+  // Add new candidate
+  const handleAddCandidate = async (newCandidateData) => {
     if (isExternalUser) {
       alert("External users are not allowed to add candidates.");
       return;
     }
-    if (!newCandidateData.firstName || !newCandidateData.lastName || !newCandidateData.experience ||!newCandidateData.skillSet|| !newCandidateData.email || !newCandidateData.mobile) {
+    if (!newCandidateData.firstName || !newCandidateData.lastName || !newCandidateData.experience || !newCandidateData.skillSet || !newCandidateData.email || !newCandidateData.mobile) {
       alert("Please fill in all required fields.");
       return;
     }
-    setCandidates([...candidates, { ...newCandidateData, id: Date.now() }]);
+
+    try {
+      const docRef = await addDoc(collection(db, "candidates"), newCandidateData);
+      setCandidates([...candidates, { id: docRef.id, ...newCandidateData }]);
+      alert("Candidate added successfully!");
+    } catch (error) {
+      console.error("Error adding candidate:", error);
+      alert("Failed to add candidate. Please try again.");
+    }
   };
 
-  
-  const handleEditCandidate = (updatedCandidateData) => {
-    setCandidates(
-      candidates.map((candidate) =>
+  // Edit candidate
+  const handleEditCandidate = async (updatedCandidateData) => {
+    if (!updatedCandidateData.id) {
+      console.error("Candidate ID is missing:", updatedCandidateData);
+      alert("Error: Candidate ID is missing. Please try again.");
+      return;
+    }
+
+    try {
+      const candidateRef = doc(db, "candidates", updatedCandidateData.id);
+      await updateDoc(candidateRef, updatedCandidateData);
+
+      setCandidates(candidates.map((candidate) =>
         candidate.id === updatedCandidateData.id ? updatedCandidateData : candidate
-      )
-    );
+      ));
+
+      alert("Candidate updated successfully!");
+    } catch (error) {
+      console.error("Error updating candidate:", error);
+      alert("Failed to update candidate. Please try again.");
+    }
   };
 
-  
+  // Delete candidate
+  const handleDeleteCandidate = async (id) => {
+    if (!id) {
+      alert("Invalid candidate ID.");
+      return;
+    }
+
+    try {
+      await deleteDoc(doc(db, "candidates", id));
+      setCandidates(candidates.filter((candidate) => candidate.id !== id));
+      alert("Candidate deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting candidate:", error);
+      alert("Failed to delete candidate. Please try again.");
+    }
+  };
+
+  // Open modal for Add/Edit
   const openModal = (candidate = null) => {
+    if (candidate) {
+      console.log("Editing candidate:", candidate);
+    }
     setEditCandidate(candidate);
     setIsModalOpen(true);
   };
 
+  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     setEditCandidate(null);
   };
 
- 
+  // Filter candidates based on search query
   const filteredCandidates = useMemo(() => {
     return candidates.filter((candidate) => {
       if (selectedFilter === "all") {
@@ -61,27 +117,19 @@ const Candidates = ({ candidates, setCandidates, isExternalUser }) => {
           value?.toString().toLowerCase().includes(searchQuery.toLowerCase())
         );
       }
-      return candidate[selectedFilter]
-        ?.toString()
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      return candidate[selectedFilter]?.toString().toLowerCase().includes(searchQuery.toLowerCase());
     });
   }, [candidates, searchQuery, selectedFilter]);
 
-  
   const indexOfLastCandidate = currentPage * itemsPerPage;
   const indexOfFirstCandidate = indexOfLastCandidate - itemsPerPage;
-  const currentCandidates = filteredCandidates.slice(
-    indexOfFirstCandidate,
-    indexOfLastCandidate
-  );
+  const currentCandidates = filteredCandidates.slice(indexOfFirstCandidate, indexOfLastCandidate);
   const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
 
   return (
     <div className="app-container">
       <h1 className="title">Candidate Profiles</h1>
 
-     
       <div className="top-bar">
         <div className="filter-container">
           <div className="search-container">
@@ -92,15 +140,10 @@ const Candidates = ({ candidates, setCandidates, isExternalUser }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            {searchQuery && (
-              <button className="clear-search" onClick={() => setSearchQuery("")}>
-                <FaTimes />
-              </button>
-            )}
+            {searchQuery && <FaTimes className="clear-search" onClick={() => setSearchQuery("")} />}
             <FaSearch className="search-icon" />
           </div>
 
-         
           <select
             value={selectedFilter}
             onChange={(e) => setSelectedFilter(e.target.value)}
@@ -124,20 +167,14 @@ const Candidates = ({ candidates, setCandidates, isExternalUser }) => {
           </select>
         </div>
 
-      
-        {!isExternalUser && (
-          <button onClick={() => openModal()} className="add-btn">
-            <FaPlus /> Add Candidate
-          </button>
-        )}
+        {!isExternalUser && <button onClick={() => openModal()} className="add-btn"><FaPlus /> Add Candidate</button>}
       </div>
 
-      
       <div className="table-container">
         <table className="candidate-table">
           <thead>
             <tr>
-              <th>First Name *</th>
+            <th>First Name *</th>
               <th>Last Name *</th>
               <th>Experience *</th>
               <th>Skill Set *</th>
@@ -187,12 +224,7 @@ const Candidates = ({ candidates, setCandidates, isExternalUser }) => {
                 <td>{candidate.comments || "N/A"}</td>
                 <td>
                   <FaEdit className="icon edit-icon" onClick={() => openModal(candidate)} />
-                  <FaTrash
-                    className="icon delete-icon"
-                    onClick={() =>
-                      setCandidates(candidates.filter((c) => c.id !== candidate.id))
-                    }
-                  />
+                  <FaTrash className="icon delete-icon" onClick={() => handleDeleteCandidate(candidate.id)} />
                 </td>
               </tr>
             ))}
@@ -200,34 +232,15 @@ const Candidates = ({ candidates, setCandidates, isExternalUser }) => {
         </table>
       </div>
 
-     
       <div className="pagination-container">
-        <button
-          className="pagination-btn"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
+        <button className="pagination-btn" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
           <FaArrowLeft />
         </button>
-        {[...Array(totalPages).keys()].map((num) => (
-          <button
-            key={num + 1}
-            className={`pagination-btn ${currentPage === num + 1 ? "active" : ""}`}
-            onClick={() => setCurrentPage(num + 1)}
-          >
-            {num + 1}
-          </button>
-        ))}
-        <button
-          className="pagination-btn"
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
+        <button className="pagination-btn" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
           <FaArrowRight />
         </button>
       </div>
 
-     
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}

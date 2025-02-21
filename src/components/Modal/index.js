@@ -224,6 +224,32 @@ const Modal = ({ isOpen, onClose, onSubmit, candidate }) => {
               onChange={handleChange}
             />
           </div>
+          {/* Status */}
+          <div className="form-group">
+            <label className="label">Status:</label>
+            <input
+              className="input-field"
+              type="text"
+              name="status"
+              placeholder="Enter Status "
+              value={formData.status }
+              onChange={handleChange}
+              required
+            />
+          </div>
+          {/* Comments*/}
+          <div className="form-group">
+            <label className="label">Comments</label>
+            <input
+              className="input-field"
+              type="text"
+              name="comments"
+              placeholder="Enter Comments "
+              value={formData.comments }
+              onChange={handleChange}
+              required
+            />
+          </div>
           <div className="form-actions">
             <button className="submit-btn" type="submit">
               {candidate ? "Save Changes" : "Add Candidate"}
