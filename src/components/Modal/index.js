@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Modal.css"; 
 import { FaTimes  } from "react-icons/fa";
-const Modal = ({ onClose, onSubmit, candidate }) => {
+const Modal = ({ isOpen, onClose, onSubmit, candidate }) => {
   const [formData, setFormData] = useState({
     firstName: candidate?.firstName || "",
     lastName: candidate?.lastName || "",
@@ -59,6 +59,8 @@ const Modal = ({ onClose, onSubmit, candidate }) => {
     onSubmit(formData);
     onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="modal-backdrop">

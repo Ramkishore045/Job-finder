@@ -1,24 +1,37 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import Pagination from "../Pagination/Pagination";
 import Modal from "../Modal/index";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaDownload, FaTimes, FaFilter, FaSearch } from "react-icons/fa";
 import "./Requirements.css";
 
-function JobProfiles({ addCandidate, isJobSeeker }) {
+function JobProfiles({ userRole }) {
   const [jobs, setJobs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("all"); // Filter dropdown state
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortField, setSortField] = useState(null);
-  const [sortOrder, setSortOrder] = useState("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingJob, setEditingJob] = useState(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // Search Bar State
 
-  // Fetch jobs from Firestore
+  // Advanced Search Filters
+  const [filters, setFilters] = useState({
+    DateofReceipt: "",
+    JobTitle: "",
+    Experience: "",
+    Location: "",
+    WorkMode: "",
+    VISAType: "",
+    ContractTenure: "",
+    BillingRate: "",
+    Client: "",
+    StatusUpdate: "",
+    Reference: "",
+  });
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -36,196 +49,133 @@ function JobProfiles({ addCandidate, isJobSeeker }) {
         setLoading(false);
       }
     };
-
     fetchJobs();
   }, []);
 
-  // Filter jobs based on dropdown and search term
-  const filteredJobs = useMemo(() => {
-    return jobs.filter((job) => {
-      if (selectedFilter === "all") {
-        return Object.values(job).some(
-          (value) =>
-            typeof value === "string" &&
-            value.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(db, "jobs", id));
+      setJobs(jobs.filter(job => job.id !== id));
+    } catch (err) {
+      console.error("Error deleting job: ", err);
+    }
+  };
+
+  const handleEdit = (job) => {
+    setEditingJob(job);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveEdit = async (updatedJob) => {
+    try {
+      if (updatedJob.id) {
+        const jobRef = doc(db, "jobs", updatedJob.id);
+        await updateDoc(jobRef, updatedJob);
+        setJobs(jobs.map(job => (job.id === updatedJob.id ? updatedJob : job)));
+      } else {
+        const docRef = await addDoc(collection(db, "jobs"), updatedJob);
+        setJobs([...jobs, { id: docRef.id, ...updatedJob }]);
       }
-      return (
-        job[selectedFilter] &&
-        job[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
-  }, [jobs, searchTerm, selectedFilter]);
+      setIsModalOpen(false);
+      setEditingJob(null);
+    } catch (err) {
+      console.error("Error updating/adding job: ", err);
+    }
+  };
 
-  // Sort filtered jobs
-  const sortedJobs = useMemo(() => {
-    if (!sortField) return filteredJobs;
-    return [...filteredJobs].sort((a, b) => {
-      const aValue = a[sortField] || "";
-      const bValue = b[sortField] || "";
-      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
-      return 0;
-    });
-  }, [filteredJobs, sortField, sortOrder]);
+  // Search & Filter Logic
+  const filteredJobs = useMemo(() => {
+    return jobs.filter(job =>
+      Object.keys(filters).every(key => 
+        !filters[key] || (job[key] && job[key].toString().toLowerCase().includes(filters[key].toLowerCase()))
+      ) &&
+      (!searchTerm || Object.values(job).some(value =>
+        value && value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      ))
+    );
+  }, [jobs, filters, searchTerm]);
 
-  // Paginate jobs
-  const totalPages = Math.ceil(sortedJobs.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
   const paginatedJobs = useMemo(() => {
-    const indexOfLastJob = currentPage * itemsPerPage;
-    const indexOfFirstJob = indexOfLastJob - itemsPerPage;
-    return sortedJobs.slice(indexOfFirstJob, indexOfLastJob);
-  }, [sortedJobs, currentPage, itemsPerPage]);
-
-  // Handlers
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleFilterChange = (e) => {
-    setSelectedFilter(e.target.value);
-    setSearchTerm(""); // Reset search term when filter changes
-  };
-
-  const handleSort = (field) => {
-    setSortField(field);
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-  };
-
-  const handleItemsPerPageChange = (newItemsPerPage) => {
-    setItemsPerPage(newItemsPerPage);
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handleAddCandidate = (candidate) => {
-    addCandidate(candidate);
-    setIsModalOpen(false);
-  };
+    return filteredJobs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  }, [filteredJobs, currentPage, itemsPerPage]);
 
   return (
     <div className="jobprofiles-container">
       <h1 className="title">Requirements</h1>
 
-      {/* Top Bar with Filter and Search */}
+      {/* Top Bar */}
       <div className="top-bar">
-        <div className="filter-container">
+        <div className="search-container">
           <input
-            type="text"
-            placeholder={`Search by ${selectedFilter}`}
             className="search-input"
+            type="text"
+            placeholder="Search..."
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <select
-            value={selectedFilter}
-            onChange={handleFilterChange}
-            className="filter-dropdown"
-          >
-            <option value="all">All Fields</option>
-            <option value="DateofReceipt">Date of Receipt</option>
-            <option value="JobTitle">Job Title</option>
-            <option value="JDProvided">JD Provided</option>
-            <option value="Experience">Experience</option>
-            <option value="Location">Location</option>
-            <option value="WorkMode">Work Mode</option>
-            <option value="VISAType">VISA Type</option>
-            <option value="ContractTenure">Contract Tenure</option>
-            <option value="BillingRate">Billing Rate</option>
-            <option value="Client">Client</option>
-            <option value="StatusUpdate">Status Update</option>
-            <option value="Reference">Reference</option>
-          </select>
+          {searchTerm && <button className="clear-search" onClick={() => setSearchTerm("")}><FaTimes /></button>}
+          <FaSearch className="search-icon" />
         </div>
-        <button
-          className="add-candidate-button"
-          onClick={() => setIsModalOpen(true)}
-        >
-          <FaPlus /> Add New Candidate
+        <button className="filter-button" onClick={() => setIsFilterOpen(!isFilterOpen)}>
+          <FaFilter /> Advanced Search
+        </button>
+        <button className="add-requirement-button" onClick={() => setIsModalOpen(true)}>
+          <FaPlus /> Add New Requirement
         </button>
       </div>
 
-      {/* Error Message */}
-      {error && <p className="error-message">{error}</p>}
-
-      {/* Job Table */}
-      {loading ? (
-        <p>Loading jobs...</p>
-      ) : (
-        <div className="table-container">
-          <table className="jobs-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("DateofReceipt")}>
-                  Date of Receipt
-                </th>
-                <th onClick={() => handleSort("JobTitle")}>Job Title</th>
-                <th onClick={() => handleSort("JDProvided")}>JD Provided (Y/N)</th>
-                <th onClick={() => handleSort("Experience")}>Experience</th>
-                <th onClick={() => handleSort("Location")}>Location</th>
-                <th onClick={() => handleSort("WorkMode")}>Work Mode</th>
-                <th onClick={() => handleSort("VISAType")}>VISA Type</th>
-                <th onClick={() => handleSort("ContractTenure")}>
-                  Contract Tenure
-                </th>
-                <th onClick={() => handleSort("BillingRate")}>
-                  {isJobSeeker ? "***" : "Billing Rate"}
-                </th>
-                <th onClick={() => handleSort("Client")}>
-                  {isJobSeeker ? "***" : "Client"}
-                </th>
-                <th onClick={() => handleSort("StatusUpdate")}>
-                  {isJobSeeker ? "***" : "Status Update"}
-                </th>
-                <th onClick={() => handleSort("Reference")}>Reference</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedJobs.length > 0 ? (
-                paginatedJobs.map((job) => (
-                  <tr key={job.id}>
-                    <td>{job.DateofReceipt}</td>
-                    <td>{job.JobTitle}</td>
-                    <td>{job.JDProvided}</td>
-                    <td>{job.Experience}</td>
-                    <td>{job.Location}</td>
-                    <td>{job.WorkMode}</td>
-                    <td>{job.VISAType}</td>
-                    <td>{job.ContractTenure}</td>
-                    <td>{isJobSeeker ? "***" : job.BillingRate}</td>
-                    <td>{isJobSeeker ? "***" : job.Client}</td>
-                    <td>{isJobSeeker ? "***" : job.StatusUpdate}</td>
-                    <td>{job.Reference}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="12" className="no-jobs">
-                    No jobs found for "{searchTerm}"
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+      {/* Advanced Search Filters */}
+      {isFilterOpen && (
+        <div className="advanced-search">
+          {Object.keys(filters).map((key) => (
+            <input
+              key={key}
+              type="text"
+              placeholder={key.replace(/([A-Z])/g, " $1")}
+              value={filters[key]}
+              onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}
+            />
+          ))}
+          <button className="clear-filter" onClick={() => setFilters({
+            DateofReceipt: "", JobTitle: "", Experience: "", Location: "",
+            WorkMode: "", VISAType: "", ContractTenure: "", BillingRate: "",
+            Client: "", StatusUpdate: "", Reference: ""
+          })}>
+            Clear Filters
+          </button>
         </div>
       )}
 
-      {/* Pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        itemsPerPage={itemsPerPage}
-        onItemsPerPageChange={handleItemsPerPageChange}
-      />
-
-      {/* Modal */}
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)} onSubmit={handleAddCandidate} />
+      {error && <p className="error-message">{error}</p>}
+      {loading ? (
+        <p>Loading jobs...</p>
+      ) : (
+        <table className="jobs-table">
+          <thead>
+            <tr>
+              {Object.keys(filters).map((key) => <th key={key}>{key.replace(/([A-Z])/g, " $1")}</th>)}
+              <th>Job Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedJobs.map(job => (
+              <tr key={job.id}>
+                {Object.keys(filters).map((key) => <td key={key}>{job[key]}</td>)}
+                <td>{job.JDFile ? <a href={job.JDFile} download><FaDownload /></a> : "No JD Uploaded"}</td>
+                <td>
+                  <button onClick={() => handleEdit(job)}><FaEdit /></button>
+                  <button onClick={() => handleDelete(job.id)}><FaTrash /></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
+
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      {isModalOpen && <Modal job={editingJob} onClose={() => setIsModalOpen(false)} onSave={handleSaveEdit} />}
     </div>
   );
 }
