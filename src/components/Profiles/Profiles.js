@@ -13,24 +13,34 @@ const Candidates = ({ isExternalUser }) => {
   const [editCandidate, setEditCandidate] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Fetch candidates from Firestore
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
+        setLoading(true);
         const querySnapshot = await getDocs(collection(db, "candidates"));
         const candidatesData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
+          id: doc.id,  // ✅ Ensure Firestore assigns a valid ID
           ...doc.data(),
         }));
+
+        console.log("Fetched candidates with IDs:", candidatesData); // Debugging
         setCandidates(candidatesData);
       } catch (error) {
         console.error("Error fetching candidates:", error);
       }
+      finally {
+        setLoading(false);
+      }
     };
 
     fetchCandidates();
-  }, []);
+  }, [refresh]);
+
+
 
 
   // Add new candidate
@@ -56,43 +66,48 @@ const Candidates = ({ isExternalUser }) => {
 
   // Edit candidate
   const handleEditCandidate = async (updatedCandidateData) => {
-    if (!updatedCandidateData.id) {
-      console.error("Candidate ID is missing:", updatedCandidateData);
-      alert("Error: Candidate ID is missing. Please try again.");
-      return;
-    }
-
     try {
-      const candidateRef = doc(db, "candidates", updatedCandidateData.id);
-      await updateDoc(candidateRef, updatedCandidateData);
-
-      setCandidates(candidates.map((candidate) =>
-        candidate.id === updatedCandidateData.id ? updatedCandidateData : candidate
-      ));
-
-      alert("Candidate updated successfully!");
+      if (updatedCandidateData.id) {
+        const candidateRef = doc(db, "candidates", updatedCandidateData.id);
+        await updateDoc(candidateRef, updatedCandidateData);
+        setCandidates(candidates.map((candidate) => (candidate.id === updatedCandidateData.id ? updatedCandidateData : candidate)));
+      }
+      else {
+        const docRef = await addDoc(collection(db, "candidates"), updatedCandidateData);
+        updatedCandidateData.id = docRef.id;
+      }
+      setIsModalOpen(false);
+      setEditCandidate(null);
     } catch (error) {
       console.error("Error updating candidate:", error);
-      alert("Failed to update candidate. Please try again.");
+
     }
+
   };
 
   // Delete candidate
   const handleDeleteCandidate = async (id) => {
     if (!id) {
-      alert("Invalid candidate ID.");
+      console.error("Error: Candidate ID is null or undefined.", id);
+      alert("Error: Unable to delete. Candidate ID is missing.");
       return;
     }
 
     try {
+      console.log("Deleting candidate with ID:", id);
       await deleteDoc(doc(db, "candidates", id));
-      setCandidates(candidates.filter((candidate) => candidate.id !== id));
+
+      setCandidates((prevCandidates) => prevCandidates.filter((candidate) => candidate.id !== id));
+
       alert("Candidate deleted successfully!");
     } catch (error) {
       console.error("Error deleting candidate:", error);
       alert("Failed to delete candidate. Please try again.");
     }
   };
+
+
+
 
   // Open modal for Add/Edit
   const openModal = (candidate = null) => {
@@ -169,12 +184,14 @@ const Candidates = ({ isExternalUser }) => {
 
         {!isExternalUser && <button onClick={() => openModal()} className="add-btn"><FaPlus /> Add Candidate</button>}
       </div>
-
+      {loading ? (
+        <p>Loading Candidates...</p>
+      ) : (
       <div className="table-container">
         <table className="candidate-table">
           <thead>
             <tr>
-            <th>First Name *</th>
+              <th>First Name *</th>
               <th>Last Name *</th>
               <th>Experience *</th>
               <th>Skill Set *</th>
@@ -192,8 +209,8 @@ const Candidates = ({ isExternalUser }) => {
             </tr>
           </thead>
           <tbody>
-            {currentCandidates.map((candidate) => (
-              <tr key={candidate.id}>
+            {currentCandidates.map((candidate, index) => (
+              <tr key={candidate.id || `candidate-${index}`}>
                 <td>{candidate.firstName || "N/A"}</td>
                 <td>{candidate.lastName || "N/A"}</td>
                 <td>{candidate.experience || "0"}</td>
@@ -224,14 +241,29 @@ const Candidates = ({ isExternalUser }) => {
                 <td>{candidate.comments || "N/A"}</td>
                 <td>
                   <FaEdit className="icon edit-icon" onClick={() => openModal(candidate)} />
-                  <FaTrash className="icon delete-icon" onClick={() => handleDeleteCandidate(candidate.id)} />
+                  <FaTrash
+                    className="icon delete-icon"
+                    onClick={() => {
+                      console.log("Candidate object on delete click:", candidate);
+                      console.log("Candidate ID:", candidate.id);
+                      if (!candidate.id) {
+                        alert("Error: Candidate ID is missing. Cannot delete.");
+                        return;
+                      }
+                      handleDeleteCandidate(candidate.id);
+                    }}
+                  />
+
+
+
+
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
+      )}
       <div className="pagination-container">
         <button className="pagination-btn" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
           <FaArrowLeft />
