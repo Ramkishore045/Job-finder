@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { collection, getDocs, deleteDoc, doc, updateDoc, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import Pagination from "../Pagination/Pagination";
 import JobProfileModal from "../Modal/JobProfileModal";
@@ -17,6 +17,11 @@ function JobProfiles({ userRole }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [refresh, setRefresh] = useState(false);
+
+
+    
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    const isLoggedIn = !!loggedInUser;
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -167,8 +172,8 @@ function JobProfiles({ userRole }) {
                   <td>{job.WorkMode || "N/A"}</td>
                   <td>{job.VISAType || "N/A"}</td>
                   <td>{job.ContractTenure || "N/A"}</td>
-                  <td>{userRole === "admin" ? job.BillingRate || "N/A" : "*****"}</td>
-                  <td>{userRole === "admin" ? job.Client || "N/A" : "*****"}</td>
+                  <td>{isLoggedIn ? job.BillingRate || "N/A" : "*****"}</td>
+                  <td>{isLoggedIn ? job.Client || "N/A" : "*****"}</td>
                   <td>{job.StatusUpdate || "N/A"}</td>
                   <td>{job.Reference || "N/A"}</td>
                   <td>

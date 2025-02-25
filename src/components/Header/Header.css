@@ -1,171 +1,121 @@
-/* Responsive Header */
+/* =============== HEADER STYLES =============== */
 .header-container {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #0d1117;
-  border-bottom: 1px solid #eaeaea;
-  font-family: 'Arial', sans-serif;
+  align-items: center;
+  background-color: #1a1a2e;
+  padding: 15px 30px;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-width: auto;
 }
 
+/* Logo */
 .header-container img {
-  height: 40px;
+  height: 50px;
+  cursor: pointer;
 }
 
 /* Navigation */
 .primary-nav {
   display: flex;
+  align-items: center;
   gap: 20px;
 }
 
 .primary-nav a {
+  color: white;
   text-decoration: none;
-  color: #eaeaea;
   font-size: 16px;
   font-weight: 500;
-  position: relative;
+  transition: color 0.3s ease-in-out;
 }
 
-.primary-nav a:hover {
-  color: #1cb086;
+.primary-nav a:hover,
+.primary-nav .active {
+  color: #00adb5;
 }
 
-.primary-nav a.active {
-  color: #1cb086;
-  font-weight: bold;
-}
-
-.primary-nav a.active::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #1cb086;
-}
-
-/* Header Actions */
+/* Header Actions (Icons + User Profile) */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 15px;
-}
-
-.header-actions img {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-}
-
-/* Upload Resume Button */
-.upload-resume-btn {
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  border: 1px solid #1cb086;
-  border-radius: 5px;
-  color: #1cb086;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.upload-resume-btn:hover {
-  background: #1cb086;
-  color: #ffffff;
-}
-
-/* Dropdown */
-.dropdown {
   position: relative;
-  display: inline-block;
 }
 
-.dropdown-title {
+.header-actions svg {
   cursor: pointer;
-  color: #1cb086;
-  font-weight: bold;
+  transition: transform 0.2s ease-in-out;
+}
+
+.header-actions svg:hover {
+  transform: scale(1.1);
+}
+
+/* =============== USER PROFILE & DROPDOWN =============== */
+.user-dropdown {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 5px;
 }
 
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.user-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Dropdown Menu */
 .dropdown-menu {
   position: absolute;
-  top: 110%; 
-  left: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 10px 0; 
+  top: 50px;  /* Position below user icon */
+  right: 0;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  min-width: 160px;
   z-index: 10;
-  width: 200px;
-  display: none;
-}
-
-.dropdown:hover .dropdown-menu {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Dropdown Items */
-.dropdown-menu a,
-.dropdown-item {
-  display: block;
-  padding: 10px 20px;
-  color: #333;
-  text-decoration: none;
+.logout-btn {
+  border: none;
+  background: none;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.dropdown-menu a:hover,
-.dropdown-item:hover {
-  background-color: #f5f5f5;
-  color: #1cb086;
-}
-
-/* Submenu */
-.dropdown-item {
-  position: relative;
+  color: red;
+  padding: 12px;
   cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
 }
 
-.dropdown-submenu {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 10px 0;
-  z-index: 10;
-  width: 180px;
-  display: none;
+.logout-btn:hover {
+  background-color: #ffe6e6;
 }
 
-.dropdown-item:hover .dropdown-submenu {
-  display: block;
-}
+/* ================== */
+/* RESPONSIVE DESIGN  */
+/* ================== */
 
-.dropdown-submenu a {
-  display: block;
-  padding: 10px 20px;
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.dropdown-submenu a:hover {
-  background-color: #f5f5f5;
-  color: #1cb086;
-}
-
-/* Responsive Design */
+/* Medium Screens (Tablets) */
 @media (max-width: 1024px) {
+  .header-container {
+    padding: 15px 20px;
+  }
+
   .primary-nav {
     gap: 15px;
   }
@@ -174,76 +124,69 @@
     font-size: 14px;
   }
 
-  .header-actions {
-    gap: 10px;
+  .user-icon {
+    width: 35px;
+    height: 35px;
   }
 
-  .upload-resume-btn {
-    padding: 6px 12px;
-    font-size: 12px;
+  .dropdown-menu {
+    top: 45px;
+    right: 5px;
   }
 }
 
+/* Small Screens (Mobile) */
 @media (max-width: 768px) {
   .header-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     padding: 10px;
   }
 
   .primary-nav {
     flex-direction: column;
+    align-items: center;
     gap: 10px;
-    width: 100%;
-    display: none; /* Hide menu initially */
-  }
-
-  .primary-nav.show {
-    display: flex; /* Show menu when active */
   }
 
   .primary-nav a {
     font-size: 14px;
-    padding: 8px;
+    padding: 5px;
   }
 
   .header-actions {
-    width: 100%;
-    justify-content: space-between;
+    margin-top: 10px;
+    gap: 10px;
   }
 
-  .upload-resume-btn {
-    width: 100%;
-    text-align: center;
-  }
-
-  .dropdown-menu {
-    width: 100%;
-    position: relative;
-  }
-
-  .dropdown-submenu {
-    width: 100%;
-    left: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-container img {
-    height: 30px;
-  }
-
-  .primary-nav a {
-    font-size: 13px;
-  }
-
-  .header-actions img {
+  .user-icon {
     width: 30px;
     height: 30px;
   }
 
-  .upload-resume-btn {
-    padding: 5px 10px;
-    font-size: 12px;
+  .dropdown-menu {
+    top: 40px;
+    right: -10px;
+    min-width: 140px;
+  }
+}
+
+/* Very Small Screens (Mobile Portrait) */
+@media (max-width: 480px) {
+  .primary-nav a {
+    font-size: 13px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .user-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .dropdown-menu {
+    min-width: 120px;
   }
 }

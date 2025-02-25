@@ -1,126 +1,150 @@
-import React, { useState } from 'react';
-import './Login.css';
-import { FaFacebookF, FaGoogle, FaTwitter } from 'react-icons/fa';
-import { IoEye, IoEyeOff } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FaFacebookF, FaGoogle, FaTwitter } from "react-icons/fa";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
+import { addUser } from "../Redux/Reducer/User";
+import { useDispatch } from "react-redux";
+import "./Login.css";
 
-const validCredentials = [
-  { username: 'candidate', password: 'jobtex' },
-  { username: 'employer', password: 'jobtex' },
-];
-
-function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
+const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (event) => {
-    event.preventDefault();
-
-    const isValid = validCredentials.some(
-      (cred) => cred.username === username && cred.password === password
-    );
-
-    if (isValid) {
-      setError('');
-      navigate('/');
-    } else {
-      setError('Invalid username or password');
-    }
-  };
+  const [form, setForm] = useState({ username: "", password: "" });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const login = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!form.username || !form.password) {
+      setError("⚠️ Please fill in all fields!");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const usersRef = collection(db, "UserCollection");
+      const queryRequest = query(usersRef, where("username", "==", form.username));
+      const userlist = await getDocs(queryRequest);
+
+      if (userlist.empty) {
+        setError("❌ User not found! Check your username.");
+      } else {
+        const userData = userlist.docs[0].data();
+        if (userData.password === form.password) {
+          dispatch(addUser(userData));
+          localStorage.setItem("loggedInUser", JSON.stringify(userData)); // ✅ Store login info
+          navigate("/");
+          window.location.reload();
+        } else {
+          setError("🔑 Incorrect password! Try again.");
+        }
+      }
+    } catch (error) {
+      setError("🚨 Login failed! Please try again.");
+      console.error("Login Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
         <h1 className="login-title">Log In</h1>
-        <div className="demo-credentials">
-          <p>
-            Username: <span>candidate</span> or <span>employer</span>
-          </p>
-          <p>
-            Password: <span>jobtex</span>
-          </p>
-        </div>
+
         {error && <p className="error-message">{error}</p>}
-        <form onSubmit={handleLogin} className="login-form">
+
+        <form onSubmit={login} className="login-form">
           <label className="login-label" htmlFor="username">
             Username or email address*
           </label>
           <input
             id="username"
-            type="text"
+            type="email"
+            name="username"
             placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={form.username}
+            onChange={handleChange}
             className="login-input"
             required
           />
+
           <label className="login-label" htmlFor="password">
             Password*
           </label>
           <div className="password-wrapper">
             <input
               id="password"
-              type={isPasswordVisible ? 'text' : 'password'}
+              type={isPasswordVisible ? "text" : "password"}
+              name="password"
               placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={form.password}
+              onChange={handleChange}
               className="login-input"
               required
             />
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="password-togglee"
+              className="password-toggle"
               aria-label="Toggle password visibility"
             >
               {isPasswordVisible ? <IoEyeOff /> : <IoEye />}
             </button>
           </div>
+
           <div className="extra-options">
             <label>
               <input type="checkbox" /> Remember me
             </label>
-            <a href="#" className="forgot-password">
+            <NavLink to="/forgot-password" className="forgot-password">
               Forgot password?
-            </a>
+            </NavLink>
           </div>
-          <button type="submit" className="login-button">
-            Login
+
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         <div className="signup-options">
           <p>or sign up with</p>
         </div>
+
         <div className="social-buttons">
-          <button className="social-button facebook" aria-label="Sign in with Facebook">
+          <button className="social-button facebook">
             <FaFacebookF /> Continue with Facebook
           </button>
-          <button className="social-button google" aria-label="Sign in with Google">
+          <button className="social-button google">
             <FaGoogle /> Continue with Google
           </button>
-          <button className="social-button twitter" aria-label="Sign in with Twitter">
+          <button className="social-button twitter">
             <FaTwitter /> Continue with Twitter
           </button>
         </div>
 
         <div className="sign-up">
-          Not registered yet?{' '}
-          <a href="/create-account" aria-label="Sign up for a new account">
-            Sign Up
-          </a>
+          Not registered yet?{" "}
+          <NavLink to="/create-account">Sign Up</NavLink>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;

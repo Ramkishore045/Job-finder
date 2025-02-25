@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { FaTrash, FaEdit, FaPlus, FaArrowLeft, FaArrowRight, FaTimes, FaSearch, FaDownload } from "react-icons/fa";
-import { db } from "../../firebase/firebase"; // Ensure correct path
-import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
+
 import Modal from "../Modal/index";
 import "./Profiles.css";
 

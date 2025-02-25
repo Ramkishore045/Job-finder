@@ -1,198 +1,255 @@
-/* Login.css */
+/* Center the login form */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #4b6cb7, #182848);
+  padding: 20px;
+}
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-  }
+/* Login Box */
+.login-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Title */
+.login-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+/* Form Fields */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-label {
+  text-align: left;
+  font-size: 0.9rem;
+  margin: 8px 0 4px;
+  font-weight: bold;
+  color: #333;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box; /* Ensures padding does not affect width */
+}
+
+.login-input:focus {
+  border-color: #4b6cb7;
+}
+
+/* Password Wrapper */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 40px; /* Ensures space for the eye icon */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Remember me & Forgot Password */
+
+.extra-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  margin: 10px;
+}
+
+.extra-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    padding: 20px;
-  }
-  
+}
+.extra-options input{
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.extra-options label{
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.extra-options a {
+  color: #4b6cb7;
+  text-decoration: none;
+}
+
+.extra-options a:hover {
+  text-decoration: underline;
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #4b6cb7;
+  color: white;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  background: #3a5ba0;
+}
+
+/* Sign Up Options */
+.signup-options {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Social Login Buttons */
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  gap: 10px; /* Adds spacing between icon and text */
+}
+
+.facebook {
+  background: #3b5998;
+  color: white;
+}
+
+.google {
+  background: #db4437;
+  color: white;
+}
+
+.twitter {
+  background: #1da1f2;
+  color: white;
+}
+
+.social-button:hover {
+  opacity: 0.8;
+}
+
+/* Sign Up Link */
+.sign-up {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.sign-up a {
+  color: #4b6cb7;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sign-up a:hover {
+  text-decoration: underline;
+}
+
+/* 📌 Responsive Design */
+@media screen and (max-width: 480px) {
   .login-box {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    max-width: 400px;
     width: 100%;
-    text-align: center;
+    max-width: 90%;
+    padding: 1.5rem;
   }
-  
+
   .login-title {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
   }
-  
-  .demo-credentials {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    color: #555;
-    text-align: left;
-  }
-  
-  .demo-credentials span {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .login-form {
-    margin-bottom: 20px;
-  }
-  
-  .login-label {
-    display: block;
-    text-align: left;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-  }
-  
+
   .login-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    font-size: 1rem;
-    box-sizing: border-box;
-  }
-  
-  .password-wrapper {
-    position: relative;
-  }
-  
-  .password-togglee {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: #555;
-  }
-  
-  .extra-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
     font-size: 0.9rem;
+    padding: 8px;
   }
-  
-  .forgot-password {
-    color: #2575fc;
-    text-decoration: none;
+
+  .password-toggle {
+    font-size: 1rem;
   }
-  
-  .forgot-password:hover {
-    text-decoration: underline;
-  }
-  
+
   .login-button {
-    background-color: #2575fc;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.3s ease;
-  }
-  
-  .login-button:hover {
-    background-color: #1a5ecc;
-  }
-  
-  .signup-options {
-    margin: 20px 0;
-    color: #555;
     font-size: 0.9rem;
-  }
-  
-  .social-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .social-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
     padding: 10px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    transition: background 0.3s ease;
   }
-  
-  .social-button.facebook {
-    background-color: #3b5998;
-    color: white;
+
+  .extra-options {
+    font-size: 0.8rem;
   }
-  
-  .social-button.google {
-    background-color: #db4437;
-    color: white;
+
+  .social-buttons {
+    flex-direction: column;
   }
-  
-  .social-button.twitter {
-    background-color: #1da1f2;
-    color: white;
+
+  .social-button {
+    font-size: 0.85rem;
+    padding: 8px;
   }
-  
-  .social-button:hover {
-    opacity: 0.9;
-  }
-  
+
   .sign-up {
-    font-size: 0.9rem;
-    color: #555;
+    font-size: 0.85rem;
   }
-  
-  .sign-up a {
-    color: #2575fc;
-    text-decoration: none;
-  }
-  
-  .sign-up a:hover {
-    text-decoration: underline;
-  }
-  
-  .error-message {
-    color: #dc3545;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 600px) {
-    .login-box {
-      padding: 20px;
-    }
-  
-    .login-title {
-      font-size: 1.5rem;
-    }
-  }
-  
+}
